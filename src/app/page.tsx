@@ -1,7 +1,7 @@
 export default function Home() {
   return (
-    <section>
-      Hello
-    </section>
+    <div className="w-full pt-14">
+      Home
+    </div>
   );
 }

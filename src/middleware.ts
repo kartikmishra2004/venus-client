@@ -6,9 +6,9 @@ export function middleware(req: NextRequest) {
     if (pathname === '/login' && isLoggedIn) {
         return NextResponse.redirect(new URL('/', req.url));
     }
-    if (['/', '/dashboard'].includes(pathname) && !isLoggedIn) {
+    if (pathname.startsWith('/dashboard') && !isLoggedIn) {
         return NextResponse.redirect(new URL('/login', req.url));
     }
     return NextResponse.next();
 }
-export const config = { matcher: ['/', '/login', '/dashboard'], };
+export const config = { matcher: ['/login', '/dashboard/:path*'], };

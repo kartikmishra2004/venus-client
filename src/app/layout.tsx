@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
   title: "Venus Sports Arena ",
@@ -8,9 +10,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html className="dark" lang="en">
       <body>
-        {children}
+        <SidebarProvider>
+          <Navbar />
+          {children}
+        </SidebarProvider>
       </body>
     </html>
   );
