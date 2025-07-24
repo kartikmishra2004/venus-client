@@ -1,5 +1,4 @@
 "use client"
-
 import {
     IconCreditCard,
     IconDotsVertical,
@@ -43,7 +42,7 @@ export function NavUser({
     const { isMobile } = useSidebar()
     const router = useRouter()
     const handleLogout = async () => {
-        const resp = await logout();
+        await logout();
         router.push('/login')
     }
 

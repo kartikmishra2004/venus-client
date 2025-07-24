@@ -43,15 +43,16 @@ export async function logout() {
         const token = cookieStore.get('refresh-token');
 
         if (token) {
-            await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ sessionId: token }),
+                body: JSON.stringify({ sessionId: token.value }),
             });
+            const data: AuthResponse = await response.json();
+            if (data.success) cookieStore.delete('refresh-token');
         }
-        cookieStore.delete('refresh-token');
     } catch (error) {
         console.error('Logout error:', error);
     }
