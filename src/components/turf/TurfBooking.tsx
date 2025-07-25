@@ -317,12 +317,12 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
             </div>
             {showForm && (
                 <div className="fixed inset-0 bg-zinc-950 bg-opacity-50 flex items-center justify-center p-4 z-50">
-                    <div className="bg-zinc-200 dark:bg-zinc-900 border rounded-lg max-w-2xl w-full max-h-[90vh] mt-14 overflow-y-auto">
-                        <div className="p-6 border-b">
-                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">New Turf Booking</h2>
+                    <div className="bg-zinc-200 dark:bg-zinc-900 border rounded-lg max-w-2xl w-full mt-14 overflow-y-auto">
+                        <div className="p-3 border-b">
+                            <h2 className="text-md font-semibold text-gray-900 dark:text-white">New Turf Booking</h2>
                         </div>
 
-                        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+                        <form onSubmit={handleSubmit} className="p-4 space-y-4">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-zinc-800 dark:text-gray-300 mb-1">
@@ -398,6 +398,16 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                                         <option value="bulk">Bulk</option>
                                     </select>
                                 </div>
+                                {formData.bookingType === 'bulk' && (
+                                    <div className="md:col-span-2 p-3 border rounded-md dark:bg-zinc-800 text-xs dark:text-zinc-400">
+                                        <p>Bulk booking applies to both <strong>10,000 sqft</strong> and <strong>6,500 sqft</strong> turfs.</p>
+                                        <ul className="list-disc ml-5 mt-1 space-y-0.5">
+                                            <li><strong>₹3800/h</strong> for bookings <strong>up to 5 hours</strong></li>
+                                            <li><strong>₹3500/h</strong> for bookings <strong>more than 5 hours</strong></li>
+                                            <li><strong>₹3200/h</strong> for bookings <strong>more than 10 hours</strong></li>
+                                        </ul>
+                                    </div>
+                                )}
                                 {formData.bookingType === 'turf-wise' && (
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">

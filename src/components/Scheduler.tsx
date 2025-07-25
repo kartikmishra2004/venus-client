@@ -146,10 +146,9 @@ const Scheduler: React.FC<TurfBookingSchedulerProps> = ({
     return (
         <div className="bg-zinc-900 rounded-lg border p-4 text-xs">
             <div className="max-w-6xl mx-auto">
-                <div className="rounded-lg shadow-sm p-3 mb-4">
+                <div className="rounded-lg shadow-sm px-3 mb-4">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-2">
-                            <h1 className="text-lg font-bold text-zinc-200">Turf Booking Scheduler</h1>
                             <div className="flex items-center space-x-1">
                                 <Calendar className="w-3 h-3 text-zinc-500" />
                                 <span className="text-zinc-500">
@@ -231,7 +230,7 @@ const Scheduler: React.FC<TurfBookingSchedulerProps> = ({
                         })}
                     </div>
                 </div>
-                <div className="mt-3 bg-zinc-800 rounded-lg shadow-sm border p-2">
+                <div className="mt-3 rounded-lg shadow-sm p-2">
                     <h3 className="text-xs font-semibold text-zinc-200 mb-1.5">Booking Types</h3>
                     <div className="flex space-x-4">
                         <div className="flex items-center space-x-1">
