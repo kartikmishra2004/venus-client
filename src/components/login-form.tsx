@@ -23,13 +23,13 @@ export function LoginForm({
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
   const router = useRouter()
-  // @ts-nocheck
+  // @ts-ignore
   const handleChange = (e: any) => {
     setPassword(e.target.value);
     if (error) setError(''); // Clear error when user starts typing
   }
 
-  // @ts-nocheck
+  // @ts-ignore
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
