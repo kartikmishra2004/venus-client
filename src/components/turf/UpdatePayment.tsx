@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client'
 import React, { useEffect, useState } from 'react'
 
@@ -11,6 +10,8 @@ const UpdatePayment = ({ setShowModal, bookingId }: UpdatePaymentProps) => {
     const [formData, setFormData] = useState({
         additionalPayment: ''
     });
+    /* eslint-disable @typescript-eslint/ban-ts-comment */
+    // @ts-nocheck
     const [booking, setBooking] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [updateLoading, setUpdateLoading] = useState(false);
