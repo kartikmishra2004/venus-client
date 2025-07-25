@@ -131,7 +131,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
   height: 10px;
 }
 

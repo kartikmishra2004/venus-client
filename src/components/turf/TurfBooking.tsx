@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Search, Calendar, Clock, Edit, Trash2, Users, LandPlot } from 'lucide-react';
 import Scheduler from '../Scheduler';
+import UpdatePayment from './UpdatePayment';
 
 interface TurfBooking {
     _id: string;
@@ -29,10 +30,13 @@ interface TurfBookingProps {
 const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
     const [bookings, setBookings] = useState<TurfBooking[]>([]);
     const [loading, setLoading] = useState(true);
+    const [bookingLoading, setbookingoading] = useState(false);
     const [showForm, setShowForm] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterType, setFilterType] = useState<'all' | 'turf-wise' | 'bulk'>('all');
     const [filterStatus, setFilterStatus] = useState<'all' | 'confirmed' | 'pending' | 'cancelled' | 'completed'>('all');
+    const [bookingId, setBookingId] = useState('');
 
     const [formData, setFormData] = useState({
         fullName: '',
@@ -48,6 +52,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
         turfSize: '10000' as '10000' | '6500',
         createdBy: 'Staff'
     });
+    const today = new Date().toISOString().split("T")[0];
 
     useEffect(() => {
         fetchBookings();
@@ -73,6 +78,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setbookingoading(true);
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/bookings`, {
                 method: 'POST',
@@ -101,6 +107,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                     turfSize: '10000',
                     createdBy: 'Staff'
                 });
+                setbookingoading(false)
             }
         } catch (error) {
             console.error('Error creating booking:', error);
@@ -125,6 +132,11 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
             }
         }
     };
+
+    const handleUpdatePayment = (id: string) => {
+        setBookingId(id)
+        setShowModal(true);
+    }
 
     const filteredBookings = bookings.filter(booking => {
         const matchesSearch = booking.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -294,19 +306,27 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                                                 </div>
                                             </td>
                                             <td className="px-4 py-3">
-                                                <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${booking.status === 'confirmed' ? 'bg-green-100 text-primary dark:bg-green-900/30 dark:text-primary' :
+                                                {booking.pendingAmount === 0 ? (
+                                                    <span className='text-xs text-primary bg-green-950 px-3 py-0.5 rounded-lg'>
+                                                        paid
+                                                    </span>
+                                                ) : (
+                                                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${booking.status === 'confirmed' ? 'bg-green-100 text-primary dark:bg-green-900/30 dark:text-primary' :
                                                     booking.status === 'pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' :
                                                         booking.status === 'cancelled' ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300' :
                                                             'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
                                                     }`}>
                                                     {booking.status}
                                                 </span>
+                                                )}
                                             </td>
                                             <td className="px-4 py-3">
                                                 <div className="flex space-x-2">
-                                                    <button className="p-1 text-gray-400 hover:text-primary transition-colors">
-                                                        <Edit className="w-4 h-4" />
-                                                    </button>
+                                                    {booking.pendingAmount === 0 ? (null) : (
+                                                        <button onClick={() => handleUpdatePayment(booking._id)} className="p-1 text-gray-400 hover:text-primary transition-colors">
+                                                            <Edit className="w-4 h-4" />
+                                                        </button>
+                                                    )}
                                                     <button
                                                         onClick={() => deleteBooking(booking._id)}
                                                         className="p-1 text-gray-400 hover:text-red-600 transition-colors"
@@ -448,6 +468,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                                         Booking Date
                                     </label>
                                     <input
+                                        min={today}
                                         type="date"
                                         required
                                         value={formData.bookingDate}
@@ -490,16 +511,20 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                                     Cancel
                                 </button>
                                 <button
+                                    disabled={!formData.fullName || !formData.email || !formData.phone || !formData.teamName || !formData.paymentMode || !formData.bookingType || !formData.turfSize || !formData.advanceAmount || !formData.bookingDate || !formData.startTime || !formData.endTime}
                                     type="submit"
-                                    className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/80 cursor-pointer"
+                                    className="px-4 py-2 text-sm disabled:cursor-not-allowed disabled:bg-zinc-700 font-medium text-white bg-primary rounded-md hover:bg-primary/80 cursor-pointer"
                                 >
-                                    Create Booking
+                                    {
+                                        bookingLoading ? "Please wait..." : "Create Booking"
+                                    }
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
             )}
+            {showModal && <UpdatePayment bookingId={bookingId} setShowModal={setShowModal} />}
         </div>
     );
 };
