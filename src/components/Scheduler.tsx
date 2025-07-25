@@ -53,7 +53,7 @@ const Scheduler: React.FC<TurfBookingSchedulerProps> = ({
             case 'bulk':
                 return 'bg-blue-500';
             case 'turf-wise':
-                return 'bg-green-500';
+                return 'bg-primary';
             default:
                 return 'bg-gray-500';
         }
@@ -150,8 +150,8 @@ const Scheduler: React.FC<TurfBookingSchedulerProps> = ({
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-2">
                             <div className="flex items-center space-x-1">
-                                <Calendar className="w-3 h-3 text-zinc-500" />
-                                <span className="text-zinc-500">
+                                <Calendar className="w-3 h-3 text-zinc-300" />
+                                <span className="text-zinc-300">
                                     {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
                                 </span>
                             </div>
@@ -238,7 +238,7 @@ const Scheduler: React.FC<TurfBookingSchedulerProps> = ({
                             <span className="text-xs text-zinc-300">Bulk Booking</span>
                         </div>
                         <div className="flex items-center space-x-1">
-                            <div className="w-3 h-3 bg-green-500 rounded"></div>
+                            <div className="w-3 h-3 bg-primary rounded"></div>
                             <span className="text-xs text-zinc-300">Turf-wise Booking</span>
                         </div>
                     </div>
