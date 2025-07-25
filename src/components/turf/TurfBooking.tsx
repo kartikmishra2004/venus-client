@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { Plus, Search, Calendar, Clock, Edit, Trash2, Users, LandPlot } from 'lucide-react';
+import Scheduler from '../Scheduler';
 
 interface TurfBooking {
     _id: string;
@@ -164,6 +165,9 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                     New Booking
                 </button>
             </div>
+            {bookings &&
+                <Scheduler bookings={bookings} />
+            }
             <div className="bg-white dark:bg-zinc-900 p-4 rounded-lg shadow-sm border">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div className="relative">
