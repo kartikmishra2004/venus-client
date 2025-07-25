@@ -203,8 +203,8 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
             </div>
             <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-sm border">
                 {loading ? (
-                    <div className="p-8 text-center">
-                        <div className="text-gray-500 dark:text-gray-400">Loading bookings...</div>
+                    <div className="p-8 h-[60vh] flex justify-center items-center text-center">
+                        <div className="w-8 h-8 border-t-2 border-zinc-300 rounded-full animate-spin" />
                     </div>
                 ) : filteredBookings.length === 0 ? (
                     <div className="p-8 h-[60vh] flex justify-center items-center flex-col text-center">
