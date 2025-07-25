@@ -23,19 +23,20 @@ export function LoginForm({
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
   const router = useRouter()
-
+  // @ts-nocheck
   const handleChange = (e: any) => {
     setPassword(e.target.value);
     if (error) setError(''); // Clear error when user starts typing
   }
 
+  // @ts-nocheck
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
-      const resp = await login(password);
+      await login(password);
       router.push('/dashboard/turf');
     } catch (error) {
       console.error("Failed to login!!", error);

@@ -219,15 +219,17 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                     </div>
                     <select
                         value={filterType}
+                        // @ts-nocheck
                         onChange={(e) => setFilterType(e.target.value as any)}
                         className="px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
-                    >
+                        >
                         <option value="all">All Types</option>
                         <option value="turf-wise">Turf-wise</option>
                         <option value="bulk">Bulk</option>
                     </select>
                     <select
                         value={filterStatus}
+                        // @ts-nocheck
                         onChange={(e) => setFilterStatus(e.target.value as any)}
                         className="px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                     >

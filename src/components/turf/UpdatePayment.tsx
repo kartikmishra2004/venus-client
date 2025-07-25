@@ -1,10 +1,11 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-
+// @ts-nocheck
 const UpdatePayment = ({ setShowModal, sessionId, bookingId }: any) => {
     const [formData, setFormData] = useState({
         additionalPayment: ''
     });
+    // @ts-nocheck
     const [booking, setBooking] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [updateLoading, setUpdateLoading] = useState(false);

@@ -20,8 +20,6 @@ interface TurfBooking {
     createdAt: string;
 }
 
-type ViewMode = 'month' | 'week' | 'day';
-
 interface TurfBookingSchedulerProps {
     bookings?: TurfBooking[];
 }
@@ -30,7 +28,6 @@ const Scheduler: React.FC<TurfBookingSchedulerProps> = ({
     bookings
 }) => {
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
-    const [viewMode, setViewMode] = useState<ViewMode>('month');
     const [selectedBooking, setSelectedBooking] = useState<TurfBooking | null>(null);
 
     const formatTime = (timeString: string): string => {
