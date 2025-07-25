@@ -6,11 +6,35 @@ type UpdatePaymentProps = {
     bookingId: string;
 };
 
+interface Booking {
+    _id: string;
+    advanceAmount: number;
+    bookingDate: string;
+    bookingDuration: string;
+    bookingType: string;
+    createdAt: string;
+    createdBy: string;
+    email: string;
+    endTime: string;
+    fullName: string;
+    hours: number;
+    paymentMode: string;
+    pendingAmount: number;
+    phone: string;
+    startTime: string;
+    status: string;
+    teamName: string;
+    totalAmount: number;
+    turfSize: string;
+    updatedAt: string;
+    __v: number;
+}
+
 const UpdatePayment = ({ setShowModal, bookingId }: UpdatePaymentProps) => {
     const [formData, setFormData] = useState({
         additionalPayment: ''
     });
-    const [booking, setBooking] = useState<any>(null);
+    const [booking, setBooking] = useState<Booking | null>(null);
     const [loading, setLoading] = useState(true);
     const [updateLoading, setUpdateLoading] = useState(false);
 
@@ -64,10 +88,11 @@ const UpdatePayment = ({ setShowModal, bookingId }: UpdatePaymentProps) => {
 
     const handlePaymentChange = (value: string) => {
         const numValue = Number(value);
-        if (numValue <= booking?.pendingAmount && numValue >= 0) {
+
+        if (booking && numValue <= booking.pendingAmount && numValue >= 0) {
             setFormData({ additionalPayment: value });
         }
-    }
+    };
 
     if (loading) {
         return (
