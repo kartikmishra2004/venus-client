@@ -166,7 +166,15 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                 </button>
             </div>
             {bookings &&
+                loading ? (
+                <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-sm border">
+                    <div className="p-8 h-[76vh] flex justify-center items-center text-center">
+                        <div className="w-8 h-8 border-t-2 border-zinc-300 rounded-full animate-spin" />
+                    </div>
+                </div>
+            ) : (
                 <Scheduler bookings={bookings} />
+            )
             }
             <div className="bg-white dark:bg-zinc-900 p-4 rounded-lg shadow-sm border">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
