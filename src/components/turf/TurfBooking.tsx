@@ -35,7 +35,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
     const [showModal, setShowModal] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterType, setFilterType] = useState<'all' | 'turf-wise' | 'bulk'>('all');
-    const [filterStatus, setFilterStatus] = useState<'all' | 'confirmed' | 'pending' | 'cancelled' | 'completed'>('all');
+    const [filterStatus, setFilterStatus] = useState<'confirmed' | 'paid' | 'all'>('all');
     const [bookingId, setBookingId] = useState('');
 
     const [formData, setFormData] = useState({
@@ -138,15 +138,6 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
         setShowModal(true);
     }
 
-    const filteredBookings = bookings.filter(booking => {
-        const matchesSearch = booking.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            booking.phone.includes(searchTerm) ||
-            booking.teamName.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesType = filterType === 'all' || booking.bookingType === filterType;
-        const matchesStatus = filterStatus === 'all' || booking.status === filterStatus;
-
-        return matchesSearch && matchesType && matchesStatus;
-    });
 
     const calculateTotalAmount = (startTime: string, endTime: string, bookingType: string, turfSize?: string) => {
         const start = new Date(`2000-01-01T${startTime}`);
@@ -161,6 +152,32 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
             return hours * (turfSize === '10000' ? 3000 : 2000);
         }
     };
+
+
+    const filteredBookings = bookings.filter(booking => {
+        const matchesSearch = booking.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            booking.phone.includes(searchTerm) ||
+            booking.teamName.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesType = filterType === 'all' || booking.bookingType === filterType;
+
+
+        const totalAmount = calculateTotalAmount(
+            booking.startTime,
+            booking.endTime,
+            booking.bookingType,
+            booking.turfSize
+        );
+        const pendingAmount = totalAmount - booking.advanceAmount;
+
+        let matchesStatus = true;
+        if (filterStatus === 'confirmed') {
+            matchesStatus = pendingAmount !== 0;
+        } else if (filterStatus === 'paid') {
+            matchesStatus = pendingAmount === 0;
+        }
+
+        return matchesSearch && matchesType && matchesStatus;
+    });
 
     return (
         <div className="space-y-4 w-full">
@@ -216,9 +233,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                     >
                         <option value="all">All Status</option>
                         <option value="confirmed">Confirmed</option>
-                        <option value="pending">Pending</option>
-                        <option value="cancelled">Cancelled</option>
-                        <option value="completed">Completed</option>
+                        <option value="paid">Paid</option>
                     </select>
                     <div className="text-sm text-gray-600 dark:text-gray-300 flex items-center">
                         Total: {filteredBookings.length} bookings
@@ -312,12 +327,12 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                                                     </span>
                                                 ) : (
                                                     <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${booking.status === 'confirmed' ? 'bg-green-100 text-primary dark:bg-green-900/30 dark:text-primary' :
-                                                    booking.status === 'pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' :
-                                                        booking.status === 'cancelled' ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300' :
-                                                            'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
-                                                    }`}>
-                                                    {booking.status}
-                                                </span>
+                                                        booking.status === 'pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' :
+                                                            booking.status === 'cancelled' ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300' :
+                                                                'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
+                                                        }`}>
+                                                        {booking.status}
+                                                    </span>
                                                 )}
                                             </td>
                                             <td className="px-4 py-3">
