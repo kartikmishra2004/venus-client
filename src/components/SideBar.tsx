@@ -1,5 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
-
+import { LandPlot, Gamepad2, ChartNoAxesCombined, Warehouse, CalendarDays } from "lucide-react"
 import {
     Sidebar,
     SidebarContent,
@@ -18,27 +17,27 @@ const items = [
     {
         title: "Turf",
         url: "/dashboard/turf",
-        icon: Home,
+        icon: LandPlot,
     },
     {
         title: "PI Play",
         url: "/dashboard/piplay",
-        icon: Inbox,
+        icon: Gamepad2,
     },
     {
         title: "Inventory",
         url: "/dashboard/inventory",
-        icon: Calendar,
+        icon: Warehouse,
     },
     {
         title: "Events",
         url: "/dashboard/events",
-        icon: Search,
+        icon: CalendarDays,
     },
     {
         title: "Analytics",
         url: "/dashboard/analytics",
-        icon: Settings,
+        icon: ChartNoAxesCombined,
     },
 ]
 
