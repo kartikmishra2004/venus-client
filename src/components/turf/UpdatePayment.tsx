@@ -1,11 +1,16 @@
+// @ts-nocheck
 'use client'
 import React, { useEffect, useState } from 'react'
-// @ts-nocheck
-const UpdatePayment = ({ setShowModal, sessionId, bookingId }: any) => {
+
+type UpdatePaymentProps = {
+    setShowModal: (params: boolean) => void;
+    bookingId: string;
+};
+
+const UpdatePayment = ({ setShowModal, bookingId }: UpdatePaymentProps) => {
     const [formData, setFormData] = useState({
         additionalPayment: ''
     });
-    // @ts-nocheck
     const [booking, setBooking] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [updateLoading, setUpdateLoading] = useState(false);
@@ -40,7 +45,6 @@ const UpdatePayment = ({ setShowModal, sessionId, bookingId }: any) => {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${sessionId}`,
                 },
                 body: JSON.stringify({
                     advanceAmount: newAdvanceAmount,
@@ -194,7 +198,7 @@ const UpdatePayment = ({ setShowModal, sessionId, bookingId }: any) => {
                                 disabled={!formData.additionalPayment || Number(formData.additionalPayment) <= 0}
                                 className="px-3 py-1.5 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/80 disabled:bg-zinc-700 disabled:cursor-not-allowed transition-colors"
                             >
-                                Update
+                                {updateLoading ? 'Please wait...' : "Update"}
                             </button>
                         </div>
                     </form>

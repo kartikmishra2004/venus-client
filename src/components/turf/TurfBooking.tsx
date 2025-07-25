@@ -34,8 +34,8 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
     const [showForm, setShowForm] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
-    const [filterType, setFilterType] = useState<'all' | 'turf-wise' | 'bulk'>('all');
-    const [filterStatus, setFilterStatus] = useState<'confirmed' | 'paid' | 'all'>('all');
+    const [filterType, setFilterType] = useState<'all' | 'turf-wise' | 'bulk' | string>('all');
+    const [filterStatus, setFilterStatus] = useState<'confirmed' | 'paid' | 'all' | string>('all');
     const [bookingId, setBookingId] = useState('');
 
     const [formData, setFormData] = useState({
@@ -219,18 +219,16 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                     </div>
                     <select
                         value={filterType}
-                        // @ts-nocheck
-                        onChange={(e) => setFilterType(e.target.value as any)}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFilterType(e.target.value)}
                         className="px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
-                        >
+                    >
                         <option value="all">All Types</option>
                         <option value="turf-wise">Turf-wise</option>
                         <option value="bulk">Bulk</option>
                     </select>
                     <select
                         value={filterStatus}
-                        // @ts-nocheck
-                        onChange={(e) => setFilterStatus(e.target.value as any)}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFilterStatus(e.target.value)}
                         className="px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                     >
                         <option value="all">All Status</option>

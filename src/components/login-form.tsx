@@ -23,14 +23,13 @@ export function LoginForm({
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
   const router = useRouter()
-  // @ts-ignore
-  const handleChange = (e: any) => {
-    setPassword(e.target.value);
-    if (error) setError(''); // Clear error when user starts typing
-  }
 
-  // @ts-ignore
-  const handleSubmit = async (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    if (error) setError('');
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError('');
