@@ -54,7 +54,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
 
     const fetchBookings = async () => {
         try {
-            const response = await fetch('https://venus-server.vercel.app/api/bookings', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/bookings`, {
                 headers: {
                     'Authorization': `Bearer ${sessionId}`,
                 },
@@ -73,7 +73,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await fetch('https://venus-server.vercel.app/api/bookings', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/bookings`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
