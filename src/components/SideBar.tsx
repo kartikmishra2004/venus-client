@@ -1,3 +1,5 @@
+'use client'
+
 import { LandPlot, Gamepad2, ChartNoAxesCombined, Warehouse, CalendarDays } from "lucide-react"
 import {
     Sidebar,
@@ -12,6 +14,8 @@ import {
 } from "@/components/ui/sidebar"
 import { NavUser } from "./ui/nav-user"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
+import clsx from "clsx" // optional, for clean class merging
 
 const items = [
     {
@@ -47,6 +51,8 @@ const user = {
 }
 
 export function SideBar() {
+    const pathname = usePathname()
+
     return (
         <Sidebar className="pt-14">
             <SidebarContent>
@@ -54,16 +60,27 @@ export function SideBar() {
                     <SidebarGroupLabel>Venus Sports Arena</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {items.map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild>
-                                        <Link href={item.url}>
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
+                            {items.map((item) => {
+                                const isActive = pathname.startsWith(item.url)
+                                return (
+                                    <SidebarMenuItem key={item.title}>
+                                        <SidebarMenuButton
+                                            asChild
+                                            className={clsx(
+                                                "flex items-center gap-2 px-3 py-2 rounded-md transition-colors",
+                                                isActive
+                                                    ? "bg-zinc-800 text-white"
+                                                    : "text-zinc-400 hover:text-white hover:bg-zinc-800"
+                                            )}
+                                        >
+                                            <Link href={item.url}>
+                                                <item.icon className="h-5 w-5" />
+                                                <span>{item.title}</span>
+                                            </Link>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                )
+                            })}
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
