@@ -23,7 +23,6 @@ import {
     IndianRupee,
 } from 'lucide-react';
 
-// Type definitions
 type Period = 'daily' | 'weekly' | 'monthly';
 
 type PeriodData = {
@@ -103,18 +102,19 @@ const Analytics: React.FC = () => {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/analytics/revenue`);
             const data = await response.json();
             if (data.success) {
-                setData(data.data)
-                setLoading(false)
+                setData(data.data);
+                setLoading(false);
             }
         } catch (error) {
-            console.log("Error fetching revenue!!", error)
+            console.log("Error fetching revenue!!", error);
         }
-    }
+    };
 
     useEffect(() => {
-        fetchRevenue()
-    }, [])
+        fetchRevenue();
+    }, []);
 
+    // Fallback sample data while API not ready or fails
     const apiData: ApiData = {
         daily: {
             totalRevenue: 107800,
@@ -184,9 +184,30 @@ const Analytics: React.FC = () => {
         },
     };
 
-    const currentData = data ? data[selectedPeriod] : apiData[selectedPeriod];
+    // Choose current period data from API or fallback sample data
+    const currentData: PeriodData = data ? data[selectedPeriod] : apiData[selectedPeriod];
+    const currentBreakdowns = data ? data.breakdowns : apiData.breakdowns;
 
-    // Format currency
+    // Calculate turf and PiPlay total bookings and pending amounts (from API breakdowns or approximated)
+    // Note: 'pendingAmount' per turf and PiPlay is not directly available for turfBookingType,
+    // so we approximate pending for PiPlay from example or leave turf pending to 0.
+    // This can be adjusted if precise data available.
+
+    // Turf booking summary from breakdowns
+    const turfTotalBookings = currentBreakdowns.turfBookingType.reduce((sum, b) => sum + b.totalBookings, 0);
+    const turfTotalRevenue = currentBreakdowns.turfBookingType.reduce((sum, b) => sum + b.totalRevenue, 0);
+    // Pending amount per turf not explicitly provided, assuming 0 here from data structure
+    const turfPendingAmount = 0;
+
+    // PiPlay sport summary
+    const piPlayTotalBookings = currentBreakdowns.piPlaySport.reduce((sum, b) => sum + b.totalBookings, 0);
+    const piPlayTotalRevenue = currentBreakdowns.piPlaySport.reduce((sum, b) => sum + b.totalRevenue, 0);
+    // Pending amounts per sport is given in original API example under piPlaySportWise which is missing here,
+    // so we assume 0 pending for PiPlay, or you can add it if you fetch that data.
+
+    // To handle pending amounts per sport accurately, you may want to fetch or include more detailed data from your API.
+
+    // Format currency helper
     const formatCurrency = (amount: number): string => {
         return new Intl.NumberFormat('en-IN', {
             style: 'currency',
@@ -254,26 +275,26 @@ const Analytics: React.FC = () => {
             <div className="w-full h-screen flex justify-center items-center">
                 <div className="w-8 h-8 border-t-2 border-zinc-300 rounded-full animate-spin" />
             </div>
-        )
+        );
     }
 
     return (
         <div className="min-h-screen bg-zinc-950 p-6 mt-12">
             <div className="max-w-7xl mx-auto">
-                <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-zinc-300 mb-2">Revenue Dashboard</h1>
+                <div className="mb-6">
+                    <h1 className="text-2xl font-bold text-zinc-300 mb-1">Revenue Dashboard</h1>
                     <p className="text-zinc-500">Comprehensive overview of your business performance</p>
                 </div>
-                <div className="bg-zinc-900 border rounded-lg shadow-sm p-4 mb-6">
+                <div className="bg-zinc-900 border rounded-lg shadow-sm p-3 mb-6">
                     <div className="flex items-center gap-4">
-                        <Filter className="h-5 w-5 text-gray-300" />
-                        <span className="font-medium text-gray-300">Time Period:</span>
+                        <Filter className="h-4 w-4 text-gray-300" />
+                        <span className="font-medium text-sm text-gray-300">Time Period:</span>
                         <div className="flex gap-2">
                             {(['daily', 'weekly', 'monthly'] as Period[]).map((period) => (
                                 <button
                                     key={period}
                                     onClick={() => setSelectedPeriod(period)}
-                                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedPeriod === period
+                                    className={`px-2.5 py-1 rounded-lg font-medium text-xs transition-colors ${selectedPeriod === period
                                         ? 'bg-primary text-white'
                                         : 'bg-zinc-800 text-zinc-200 hover:bg-zinc-700'
                                         }`}
@@ -284,54 +305,63 @@ const Analytics: React.FC = () => {
                         </div>
                     </div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div className="bg-zinc-900 border rounded-lg shadow-sm p-6">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-zinc-200">Total Revenue</p>
-                                <p className="text-2xl font-bold text-primary">{formatCurrency(currentData.totalRevenue)}</p>
-                            </div>
-                            <div className="h-12 w-12 bg-zinc-800 border rounded-lg flex items-center justify-center">
-                                <IndianRupee className="h-6 w-6 text-primary" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 mb-6">
+                    {/* Card Component */}
+                    {[
+                        {
+                            title: "Total Revenue (Turf)",
+                            value: formatCurrency(turfTotalRevenue),
+                            color: "text-primary",
+                            Icon: IndianRupee
+                        },
+                        {
+                            title: "Total Revenue (PiPlay)",
+                            value: formatCurrency(piPlayTotalRevenue),
+                            color: "text-primary",
+                            Icon: IndianRupee
+                        },
+                        {
+                            title: "Pending Amount (Turf)",
+                            value: formatCurrency(turfPendingAmount),
+                            color: "text-red-400",
+                            Icon: Target
+                        },
+                        {
+                            title: "Pending Amount (PiPlay)",
+                            value: formatCurrency(currentData.pendingAmount - turfPendingAmount),
+                            color: "text-red-400",
+                            Icon: Target
+                        },
+                        {
+                            title: "Total Bookings (Turf)",
+                            value: turfTotalBookings,
+                            color: "text-zinc-300",
+                            Icon: Users
+                        },
+                        {
+                            title: "Total Bookings (PiPlay)",
+                            value: piPlayTotalBookings,
+                            color: "text-zinc-300",
+                            Icon: Users
+                        },
+                    ].map((item, index) => (
+                        <div
+                            key={index}
+                            className="bg-zinc-900 border rounded-lg shadow-sm p-2 col-span-1"
+                        >
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-xs font-medium text-zinc-300">{item.title}</p>
+                                    <p className={`text-xl font-semibold ${item.color}`}>{item.value}</p>
+                                </div>
+                                <div className="h-10 w-10 bg-zinc-800 border rounded-lg flex items-center justify-center">
+                                    <item.Icon className={`h-5 w-5 ${item.color}`} />
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div className="bg-zinc-900 border rounded-lg shadow-sm p-6">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-zinc-200">Net Profit</p>
-                                <p className="text-2xl font-bold text-primary">{formatCurrency(currentData.netProfit)}</p>
-                            </div>
-                            <div className="h-12 w-12 bg-zinc-800 border rounded-lg flex items-center justify-center">
-                                <TrendingUp className="h-6 w-6 text-primary" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="bg-zinc-900 border rounded-lg shadow-sm p-6">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-zinc-200">Total Bookings</p>
-                                <p className="text-2xl font-bold text-zinc-300">{currentData.totalBookings}</p>
-                            </div>
-                            <div className="h-12 w-12 bg-zinc-800 border rounded-lg flex items-center justify-center">
-                                <Users className="h-6 w-6 text-zinc-200" />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="bg-zinc-900 border rounded-lg shadow-sm p-6">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-zinc-200">Pending Amount</p>
-                                <p className="text-2xl font-bold text-red-400">{formatCurrency(currentData.pendingAmount)}</p>
-                            </div>
-                            <div className="h-12 w-12 bg-zinc-800 border rounded-lg flex items-center justify-center">
-                                <Target className="h-6 w-6 text-red-400" />
-                            </div>
-                        </div>
-                    </div>
+                    ))}
                 </div>
+
                 <div className="bg-zinc-900 border rounded-lg shadow-sm p-6 mb-8">
                     <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
                         <BarChart3 className="h-5 w-5" />
