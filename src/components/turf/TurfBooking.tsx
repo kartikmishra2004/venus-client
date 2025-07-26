@@ -102,7 +102,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
     };
 
     // Enhanced form change handler similar to Pi Play
-    const handleFormChange = (field: any, value: any) => {
+    const handleFormChange = (field: keyof typeof formData, value: string | number) => {
         let newForm = { ...formData, [field]: value };
 
         // If time fields or booking type updated, live-calculate hours, totalAmount, pending

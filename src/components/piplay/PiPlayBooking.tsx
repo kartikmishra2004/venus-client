@@ -109,7 +109,7 @@ const PiPlayBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
         return 1500 * hours;
     };
 
-    const handleFormChange = (field: any, value: any) => {
+    const handleFormChange = (field: keyof typeof formData, value: any) => {
         let newForm = { ...formData, [field]: value };
 
         // If time fields updated, live-calculate hours, totalAmount, pending
