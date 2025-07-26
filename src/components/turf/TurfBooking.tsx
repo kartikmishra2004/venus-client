@@ -14,9 +14,12 @@ interface TurfBooking {
     teamName: string;
     advanceAmount: number;
     pendingAmount?: number;
+    totalAmount?: number; // Added this field
     bookingDate: string;
     startTime: string;
     endTime: string;
+    hours?: number; // Added this field
+    bookingDuration?: string; // Added this field
     turfSize?: '10000' | '6500';
     status: 'confirmed' | 'pending' | 'cancelled' | 'completed';
     createdBy: string;
@@ -46,9 +49,13 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
         bookingType: 'turf-wise' as 'turf-wise' | 'bulk',
         teamName: '',
         advanceAmount: 0,
+        pendingAmount: 0,
+        totalAmount: 0,
         bookingDate: '',
         startTime: '',
         endTime: '',
+        hours: 1,
+        bookingDuration: '',
         turfSize: '10000' as '10000' | '6500',
         createdBy: 'Staff'
     });
@@ -76,6 +83,48 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
         }
     };
 
+    // Helper to calculate hours
+    const calculateHours = (startTime: string, endTime: string) => {
+        const start = new Date(`2000-01-01T${startTime}`);
+        const end = new Date(`2000-01-01T${endTime}`);
+        return (end.getTime() - start.getTime()) / (1000 * 60 * 60);
+    };
+
+    // Calculate total amount based on booking type and hours
+    const calculateTotal = (bookingType: string, hours: number, turfSize?: string) => {
+        if (bookingType === 'bulk') {
+            if (hours <= 5) return hours * 3800;
+            if (hours <= 10) return hours * 3500;
+            return hours * 3200;
+        } else {
+            return hours * (turfSize === '10000' ? 3000 : 2000);
+        }
+    };
+
+    // Enhanced form change handler similar to Pi Play
+    const handleFormChange = (field: any, value: any) => {
+        let newForm = { ...formData, [field]: value };
+
+        // If time fields or booking type updated, live-calculate hours, totalAmount, pending
+        if (field === 'startTime' || field === 'endTime' || field === 'bookingType' || field === 'turfSize' || field === 'advanceAmount') {
+            if (newForm.startTime && newForm.endTime) {
+                const hours = calculateHours(newForm.startTime, newForm.endTime);
+                newForm.hours = hours;
+
+                const totalAmount = calculateTotal(newForm.bookingType, hours, newForm.turfSize);
+                newForm.totalAmount = totalAmount;
+                newForm.pendingAmount = Math.max(totalAmount - Number(newForm.advanceAmount), 0);
+                newForm.bookingDuration = `${hours} ${hours === 1 ? 'hour' : 'hours'}`;
+            }
+        }
+
+        if (field === 'advanceAmount') {
+            newForm.pendingAmount = Math.max(newForm.totalAmount - Number(value), 0);
+        }
+
+        setFormData(newForm);
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setbookingoading(true);
@@ -101,9 +150,13 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                     bookingType: 'turf-wise',
                     teamName: '',
                     advanceAmount: 0,
+                    pendingAmount: 0,
+                    totalAmount: 0,
                     bookingDate: '',
                     startTime: '',
                     endTime: '',
+                    hours: 1,
+                    bookingDuration: '',
                     turfSize: '10000',
                     createdBy: 'Staff'
                 });
@@ -138,7 +191,6 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
         setShowModal(true);
     }
 
-
     const calculateTotalAmount = (startTime: string, endTime: string, bookingType: string, turfSize?: string) => {
         const start = new Date(`2000-01-01T${startTime}`);
         const end = new Date(`2000-01-01T${endTime}`);
@@ -153,13 +205,11 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
         }
     };
 
-
     const filteredBookings = bookings.filter(booking => {
         const matchesSearch = booking.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
             booking.phone.includes(searchTerm) ||
             booking.teamName.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesType = filterType === 'all' || booking.bookingType === filterType;
-
 
         const totalAmount = calculateTotalAmount(
             booking.startTime,
@@ -375,7 +425,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                                         type="text"
                                         required
                                         value={formData.fullName}
-                                        onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                                        onChange={(e) => handleFormChange('fullName', e.target.value)}
                                         className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                                     />
                                 </div>
@@ -387,7 +437,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                                         type="email"
                                         required
                                         value={formData.email}
-                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                        onChange={(e) => handleFormChange('email', e.target.value)}
                                         className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                                     />
                                 </div>
@@ -399,7 +449,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                                         type="tel"
                                         required
                                         value={formData.phone}
-                                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                        onChange={(e) => handleFormChange('phone', e.target.value)}
                                         className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                                     />
                                 </div>
@@ -411,7 +461,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                                         type="text"
                                         required
                                         value={formData.teamName}
-                                        onChange={(e) => setFormData({ ...formData, teamName: e.target.value })}
+                                        onChange={(e) => handleFormChange('teamName', e.target.value)}
                                         className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                                     />
                                 </div>
@@ -421,7 +471,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                                     </label>
                                     <select
                                         value={formData.paymentMode}
-                                        onChange={(e) => setFormData({ ...formData, paymentMode: e.target.value as 'cash' | 'upi' })}
+                                        onChange={(e) => handleFormChange('paymentMode', e.target.value as 'cash' | 'upi')}
                                         className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                                     >
                                         <option value="cash">Cash</option>
@@ -434,7 +484,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                                     </label>
                                     <select
                                         value={formData.bookingType}
-                                        onChange={(e) => setFormData({ ...formData, bookingType: e.target.value as 'turf-wise' | 'bulk' })}
+                                        onChange={(e) => handleFormChange('bookingType', e.target.value as 'turf-wise' | 'bulk')}
                                         className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                                     >
                                         <option value="turf-wise">Turf-wise</option>
@@ -458,7 +508,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                                         </label>
                                         <select
                                             value={formData.turfSize}
-                                            onChange={(e) => setFormData({ ...formData, turfSize: e.target.value as '10000' | '6500' })}
+                                            onChange={(e) => handleFormChange('turfSize', e.target.value as '10000' | '6500')}
                                             className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                                         >
                                             <option value="10000">10,000 sqft (₹3,000/hr)</option>
@@ -468,13 +518,14 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                                 )}
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Advance Amount
+                                        Advance Amount (₹)
                                     </label>
                                     <input
                                         type="number"
+                                        min={0}
                                         required
                                         value={formData.advanceAmount}
-                                        onChange={(e) => setFormData({ ...formData, advanceAmount: parseInt(e.target.value) })}
+                                        onChange={(e) => handleFormChange('advanceAmount', Number(e.target.value))}
                                         className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                                     />
                                 </div>
@@ -487,7 +538,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                                         type="date"
                                         required
                                         value={formData.bookingDate}
-                                        onChange={(e) => setFormData({ ...formData, bookingDate: e.target.value })}
+                                        onChange={(e) => handleFormChange('bookingDate', e.target.value)}
                                         className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                                     />
                                 </div>
@@ -499,7 +550,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                                         type="time"
                                         required
                                         value={formData.startTime}
-                                        onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
+                                        onChange={(e) => handleFormChange('startTime', e.target.value)}
                                         className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                                     />
                                 </div>
@@ -511,11 +562,17 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                                         type="time"
                                         required
                                         value={formData.endTime}
-                                        onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
+                                        onChange={(e) => handleFormChange('endTime', e.target.value)}
                                         className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                                     />
                                 </div>
                             </div>
+
+                            {formData.totalAmount > 0 && (
+                                <div className="mt-4 text-sm text-gray-700 dark:text-zinc-100 p-2 bg-gray-50 dark:bg-zinc-900/40 rounded">
+                                    Total for {formData.bookingDuration || ''}: <strong>₹{formData.totalAmount.toFixed(2)}</strong>, Pending: <strong>₹{formData.pendingAmount.toFixed(2)}</strong>
+                                </div>
+                            )}
 
                             <div className="flex justify-end space-x-3 pt-4 border-t">
                                 <button
@@ -526,7 +583,11 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                                     Cancel
                                 </button>
                                 <button
-                                    disabled={!formData.fullName || !formData.email || !formData.phone || !formData.teamName || !formData.paymentMode || !formData.bookingType || !formData.turfSize || !formData.advanceAmount || !formData.bookingDate || !formData.startTime || !formData.endTime}
+                                    disabled={
+                                        !formData.fullName || !formData.email || !formData.phone ||
+                                        !formData.teamName || !formData.paymentMode || !formData.bookingType ||
+                                        !formData.turfSize || !formData.bookingDate || !formData.startTime || !formData.endTime
+                                    }
                                     type="submit"
                                     className="px-4 py-2 text-sm disabled:cursor-not-allowed disabled:bg-zinc-700 font-medium text-white bg-primary rounded-md hover:bg-primary/80 cursor-pointer"
                                 >
