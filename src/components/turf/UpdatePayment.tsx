@@ -56,7 +56,7 @@ const UpdatePayment = ({ setShowModal, bookingId }: UpdatePaymentProps) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        setUpdateLoading(false)
+        setUpdateLoading(true)
         if (!booking) return;
 
         const additionalAmount = Number(formData.additionalPayment);

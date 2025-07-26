@@ -1,8 +1,8 @@
 'use client';
-
 import Link from 'next/link';
 import React from 'react';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 export default function Navbar() {
     const pathname = usePathname();
@@ -14,7 +14,7 @@ export default function Navbar() {
     return (
         <div className='flex w-full fixed h-14 bg-zinc-900 z-[999] border-b justify-between items-center px-12'>
             <Link href={'/'}>
-                <span className="w-8 flex justify-center items-center h-8 rounded-full border border-zinc-600"><h1>V</h1></span>
+                <Image src={'/logo.svg'} height={100} className='invert' width={100} alt='logo'></Image>
             </Link>
             <nav className='space-x-6'>
                 <Link className={linkClass('/')} href='/'>Home</Link>
