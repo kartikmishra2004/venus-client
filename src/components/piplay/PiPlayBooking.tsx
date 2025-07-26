@@ -110,6 +110,7 @@ const PiPlayBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
     };
 
     const handleFormChange = (field: keyof typeof formData, value: string | number) => {
+        // eslint-disable-next-line prefer-const
         let newForm = { ...formData, [field]: value };
 
         // If time fields updated, live-calculate hours, totalAmount, pending
