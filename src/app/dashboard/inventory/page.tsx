@@ -112,8 +112,8 @@ export default function Inventory() {
             const data = await res.json();
             setTransactions(data.data);
             setTotalPages(data.pagination.totalPages);
-        } catch (e: any) {
-            setError(e.message);
+        } catch (e) {
+            console.log(e);
         } finally {
             setLoading(false);
         }
@@ -194,8 +194,8 @@ export default function Inventory() {
             fetchSummary();
             if (data.billData) setBillData(data.billData);
             else setBillData(null);
-        } catch (e: any) {
-            setError(e.message);
+        } catch (e) {
+            console.log(e);
         }
     }
     console.log(billData)
@@ -206,8 +206,8 @@ export default function Inventory() {
             const data = await res.json();
             if (!res.ok) throw new Error(data.message || "Failed to fetch bill");
             setBillData(data.data);
-        } catch (e: any) {
-            setError(e.message);
+        } catch (e) {
+            console.log(e);
         } finally {
             setBillLoading(false);
         }
