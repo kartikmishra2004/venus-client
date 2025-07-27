@@ -110,7 +110,7 @@ export const Header = () => {
         Welcome to <br /> Venus Sports Arena
       </h1>
       <p className="max-w-2xl text-base md:text-md mt-4 dark:text-zinc-400">
-        At Venus Sports Arena, sports is more than just a game — it's a passion that fuels dreams, a lifestyle that inspires health and discipline, and a powerful force that brings people together. We’re not just a venue; we are Indore’s ultimate sports hub — a vibrant space where athletes strive for excellence, enthusiasts chase their goals, professionals sharpen their skills, and families share unforgettable moments. Every corner of our arena pulses with the spirit of the game, building a community united by energy, excitement, and endless possibilities.
+        At Venus Sports Arena, sports is more than just a game — it&apos;s a passion that fuels dreams, a lifestyle that inspires health and discipline, and a powerful force that brings people together. We&apos;re not just a venue; we are Indore&apos;s ultimate sports hub — a vibrant space where athletes strive for excellence, enthusiasts chase their goals, professionals sharpen their skills, and families share unforgettable moments. Every corner of our arena pulses with the spirit of the game, building a community united by energy, excitement, and endless possibilities.
       </p>
       <Link href={'/dashboard/turf'}>
         <Button size={"lg"} className="text-zinc-50 mt-4 mr-3 cursor-pointer">Dashboard</Button>

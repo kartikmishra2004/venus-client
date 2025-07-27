@@ -16,7 +16,7 @@ export default function UserLogin() {
                         User Login Coming Soon
                     </h1>
                     <p className="text-zinc-500 mb-8 leading-relaxed">
-                        We're working hard to bring you an amazing user login experience.
+                        We&apos;re working hard to bring you an amazing user login experience.
                         Stay tuned for updates!
                     </p>
                     <div className="inline-flex items-center gap-2 bg-zinc-800 border text-primary px-4 py-2 rounded-full text-sm font-medium mb-8">

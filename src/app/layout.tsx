@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import AppLayout from "../components/AppLayout";
+import NavbarWrapper from "@/components/NavbarWrapper";
 
 export const metadata: Metadata = {
   title: "Venus Sports Arena",
@@ -14,6 +15,7 @@ export default function RootLayout({
   return (
     <html className="dark" lang="en">
       <body>
+        <NavbarWrapper />
         <AppLayout>{children}</AppLayout>
       </body>
     </html>

@@ -4,8 +4,14 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from './ui/button';
+import { Power } from 'lucide-react';
+import { logout } from '@/lib/auth';
 
-export default function Navbar() {
+interface NavbarProps {
+    isLoggedIn: boolean;
+}
+
+export default function Navbar({ isLoggedIn }: NavbarProps) {
     const pathname = usePathname();
 
     const linkClass = (path: string) =>
@@ -30,9 +36,16 @@ export default function Navbar() {
                 <Link className={linkClass('/blog')} href='/blog'>Blog</Link>
                 <Link className={linkClass('/dashboard')} href='/dashboard/turf'>Dashboard</Link>
             </nav>
-            <Link href={'/login/user'}>
-                <Button size={'sm'} className='text-zinc-50 cursor-pointer'>Login</Button>
-            </Link>
+            {!isLoggedIn && (
+                <Link href='/login/user'>
+                    <Button size='sm' className='text-zinc-50 cursor-pointer'>Login</Button>
+                </Link>
+            )}
+            {isLoggedIn && (
+                <button className='cursor-pointer' onClick={async () => {await logout(); location.reload()}}>
+                    <Power className='w-5.5 text-red-400' />
+                </button>
+            )}
         </div>
     );
 }
