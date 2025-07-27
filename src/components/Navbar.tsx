@@ -3,6 +3,7 @@ import Link from 'next/link';
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+import { Button } from './ui/button';
 
 export default function Navbar() {
     const pathname = usePathname();
@@ -14,19 +15,24 @@ export default function Navbar() {
                 : pathname.startsWith(path)
         )
             ? 'text-white font-semibold underline underline-offset-4'
-            : 'text-zinc-400 hover:text-white'
+            : 'text-zinc-400 hover:text-primary'
         }`;
 
     return (
-        <div className='flex w-full fixed h-14 bg-zinc-900 z-[999] border-b justify-between items-center px-12'>
+        <div className='flex w-full fixed h-18 border-b-4 border-primary bg-zinc-900 z-[999] justify-between items-center px-12'>
             <Link href='/'>
                 <Image src='/logo.svg' height={100} className='invert' width={100} alt='logo' />
             </Link>
-            <nav className='space-x-6'>
+            <nav className='space-x-8'>
                 <Link className={linkClass('/')} href='/'>Home</Link>
+                <Link className={linkClass('/aboutus')} href='/aboutus'>About us</Link>
+                <Link className={linkClass('/contactus')} href='/contactus'>Contact us</Link>
+                <Link className={linkClass('/blog')} href='/blog'>Blog</Link>
                 <Link className={linkClass('/dashboard')} href='/dashboard/turf'>Dashboard</Link>
             </nav>
-            <div className=""></div>
+            <Link href={'/login/user'}>
+                <Button size={'sm'} className='text-zinc-50 cursor-pointer'>Login</Button>
+            </Link>
         </div>
     );
 }

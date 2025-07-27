@@ -2,7 +2,7 @@ import React from 'react'
 
 const Inventory = () => {
     return (
-        <div className='w-full pt-14 h-screen flex'>
+        <div className='w-full pt-18 h-screen flex'>
             Inventory
         </div>
     )

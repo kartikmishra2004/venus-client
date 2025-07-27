@@ -1,21 +1,20 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import Navbar from "@/components/Navbar";
+import AppLayout from "../components/AppLayout";
 
 export const metadata: Metadata = {
-  title: "Venus Sports Arena ",
-  description: "A platform for managing the turff booking, piplay booking, inventory management, event management and revenue analysis.",
+  title: "Venus Sports Arena",
+  description:
+    "A platform for managing the turff booking, piplay booking, inventory management, event management and revenue analysis.",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html className="dark" lang="en">
       <body>
-        <SidebarProvider>
-          <Navbar />
-          {children}
-        </SidebarProvider>
+        <AppLayout>{children}</AppLayout>
       </body>
     </html>
   );

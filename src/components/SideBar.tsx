@@ -54,7 +54,7 @@ export function SideBar() {
     const pathname = usePathname()
 
     return (
-        <Sidebar className="pt-14">
+        <Sidebar className="pt-18">
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupLabel>Venus Sports Arena</SidebarGroupLabel>
