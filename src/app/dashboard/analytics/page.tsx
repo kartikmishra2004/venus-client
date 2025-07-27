@@ -653,7 +653,7 @@ const Analytics: React.FC = () => {
                         </div>
                         <div>
                             <p className="text-sm text-zinc-400">Advance Collected</p>
-                            <p className="text-lg font-semibold text-green-400">{formatCurrency(grandAdvanceCollected)}</p>
+                            <p className="text-lg font-semibold text-primary">{formatCurrency(grandAdvanceCollected)}</p>
                         </div>
                         <div>
                             <p className="text-sm text-zinc-400">Pending Amount</p>

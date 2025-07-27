@@ -21,7 +21,7 @@ export default function Navbar() {
     return (
         <div className='flex w-full fixed h-18 border-b-4 border-primary bg-zinc-900 z-[999] justify-between items-center px-12'>
             <Link href='/'>
-                <Image src='/logo.svg' height={100} className='invert' width={100} alt='logo' />
+                <Image src='/monogram_logo.svg' height={30} width={30} className='hue-rotate-135' alt='logo' />
             </Link>
             <nav className='space-x-8'>
                 <Link className={linkClass('/')} href='/'>Home</Link>

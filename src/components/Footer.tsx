@@ -1,4 +1,5 @@
 import { Mail, MapPin, Phone } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
@@ -9,21 +10,14 @@ const Footer = () => {
             <div className="max-w-7xl mx-auto px-6 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
 
-                    {/* Logo and Description Section */}
                     <div className="md:col-span-1">
                         <div className="mb-6">
-                            {/* Replace this div with your actual logo component */}
                             <div className="text-white text-2xl font-bold">
-                                <span className="text-primary">VENUS</span>
-                                <div className="text-sm font-normal text-zinc-400">Sports Arena</div>
+                                <Image src='/primary_logo.svg' height={180} width={180} className='hue-rotate-135' alt='logo' />
                             </div>
                         </div>
-                        <p className="text-zinc-300 text-sm leading-relaxed">
-                            <span className="text-white font-medium">Where champions rise and dreams take flight</span> - Venus Sports Arena
-                        </p>
                     </div>
 
-                    {/* Quick Links Section 1 */}
                     <div className="md:col-span-1">
                         <h3 className="text-white text-lg font-semibold mb-6 uppercase tracking-wide">
                             Quick Links
@@ -41,7 +35,6 @@ const Footer = () => {
                         </nav>
                     </div>
 
-                    {/* Quick Links Section 2 */}
                     <div className="md:col-span-1">
                         <h3 className="text-white text-lg font-semibold mb-6 uppercase tracking-wide">
                             Quick Links
@@ -59,7 +52,6 @@ const Footer = () => {
                         </nav>
                     </div>
 
-                    {/* Get In Touch Section */}
                     <div className="md:col-span-1">
                         <h3 className="text-white text-lg font-semibold mb-6 uppercase tracking-wide">
                             Get In Touch
@@ -84,8 +76,6 @@ const Footer = () => {
                         </div>
                     </div>
                 </div>
-
-                {/* Bottom Section */}
                 <div className="mt-12 pt-8 border-t border-zinc-800">
                     <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0">
                         <div className="text-zinc-400 text-sm">
