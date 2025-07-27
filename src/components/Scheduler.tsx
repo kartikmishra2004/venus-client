@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, Calendar, Clock, User, Phone, CreditCard, MapPin } from 'lucide-react';
+import { Dispatch, SetStateAction } from 'react';
 
 interface TurfBooking {
     _id: string;
@@ -20,13 +21,33 @@ interface TurfBooking {
     createdAt: string;
 }
 
+type FormDataType = {
+    fullName: string;
+    email: string;
+    phone: string;
+    paymentMode: 'cash' | 'upi';
+    bookingType: 'turf-wise' | 'bulk';
+    teamName: string;
+    advanceAmount: number;
+    pendingAmount: number;
+    totalAmount: number;
+    bookingDate: string;
+    startTime: string;
+    endTime: string;
+    hours: number;
+    bookingDuration: string;
+    turfSize: '10000' | '6500';
+    createdBy: string;
+};
+
 interface TurfBookingSchedulerProps {
     bookings?: TurfBooking[];
+    setShowForm: (params: boolean) => void;
+    setFormData: Dispatch<SetStateAction<FormDataType>>;
+    formData: FormDataType;
 }
 
-const Scheduler: React.FC<TurfBookingSchedulerProps> = ({
-    bookings
-}) => {
+const Scheduler: React.FC<TurfBookingSchedulerProps> = ({ bookings = [], setShowForm, setFormData, formData }) => {
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
     const [selectedBooking, setSelectedBooking] = useState<TurfBooking | null>(null);
 
@@ -75,10 +96,7 @@ const Scheduler: React.FC<TurfBookingSchedulerProps> = ({
 
     const getBookingsForDate = (date: Date): TurfBooking[] => {
         const dateStr = formatDate(date);
-        return bookings?.filter(booking => {
-            const bookingDateStr = booking.bookingDate.slice(0, 10);
-            return bookingDateStr === dateStr;
-        }) || [];
+        return bookings.filter(booking => booking.bookingDate.slice(0, 10) === dateStr);
     };
 
     const generateCalendarDays = (): Date[] => {
@@ -87,15 +105,12 @@ const Scheduler: React.FC<TurfBookingSchedulerProps> = ({
         const firstDay = new Date(year, month, 1);
         const startDate = new Date(firstDay);
         startDate.setDate(startDate.getDate() - firstDay.getDay());
-
         const days: Date[] = [];
         const currentDay = new Date(startDate);
-
         for (let i = 0; i < 42; i++) {
             days.push(new Date(currentDay));
             currentDay.setDate(currentDay.getDate() + 1);
         }
-
         return days;
     };
 
@@ -137,6 +152,19 @@ const Scheduler: React.FC<TurfBookingSchedulerProps> = ({
     const handleModalBackdropClick = (e: React.MouseEvent<HTMLDivElement>): void => {
         if (e.target === e.currentTarget) {
             closeModal();
+        }
+    };
+
+    const handleDateCellClick = (day: Date, bookings: TurfBooking[]) => {
+        if (bookings.length > 0) {
+            setSelectedBooking(bookings[0]);
+        } else {
+            const bookingDate = formatDate(day).toString();
+            setShowForm(true);
+            setFormData({
+                ...formData,
+                bookingDate: bookingDate,
+            })
         }
     };
 
@@ -188,14 +216,26 @@ const Scheduler: React.FC<TurfBookingSchedulerProps> = ({
                     <div className="grid grid-cols-7">
                         {calendarDays.map((day, index) => {
                             const dayBookings = getBookingsForDate(day);
+                            const isInCurrentMonth = isCurrentMonth(day);
+                            const isTodayDate = isToday(day);
+
+                            // A date is always clickable (either opens booking dialog or logs date)
                             return (
                                 <div
                                     key={`${day.getTime()}-${index}`}
-                                    className={`min-h-16 border-r border-b last:border-r-0 p-1.5 ${!isCurrentMonth(day) ? 'bg-zinc-700' : 'bg-zinc-800'
-                                        } ${isToday(day) ? 'bg-blue-50' : ''}`}
+                                    className={
+                                        `min-h-16 border-r border-b last:border-r-0 p-1.5 
+                                         ${!isInCurrentMonth ? 'bg-zinc-700' : 'bg-zinc-800'}
+                                         ${isTodayDate ? 'bg-blue-50' : ''}
+                                         ${isInCurrentMonth ? 'cursor-pointer hover:bg-zinc-600 transition-colors' : 'cursor-default'}
+                                        `
+                                    }
+                                    tabIndex={isInCurrentMonth ? 0 : -1}
+                                    onClick={() => isInCurrentMonth && handleDateCellClick(day, dayBookings)}
+                                    aria-disabled={!isInCurrentMonth}
                                 >
-                                    <div className={`text-xs font-medium mb-1 ${isToday(day) ? 'text-primary' :
-                                        !isCurrentMonth(day) ? 'text-gray-400' : 'text-zinc-200'
+                                    <div className={`text-xs font-medium mb-1 ${isTodayDate ? 'text-primary' :
+                                        !isInCurrentMonth ? 'text-gray-400' : 'text-zinc-200'
                                         }`}>
                                         {day.getDate()}
                                     </div>
@@ -203,11 +243,14 @@ const Scheduler: React.FC<TurfBookingSchedulerProps> = ({
                                         {dayBookings.map(booking => (
                                             <div
                                                 key={booking._id}
-                                                onClick={() => handleBookingClick(booking)}
+                                                onClick={e => {
+                                                    e.stopPropagation(); // Prevent parent date cell click
+                                                    handleBookingClick(booking);
+                                                }}
                                                 className={`${getBookingColor(booking.bookingType)} text-white text-[10px] p-1 rounded cursor-pointer hover:opacity-80 transition-opacity`}
                                                 role="button"
                                                 tabIndex={0}
-                                                onKeyDown={(e) => {
+                                                onKeyDown={e => {
                                                     if (e.key === 'Enter' || e.key === ' ') {
                                                         e.preventDefault();
                                                         handleBookingClick(booking);

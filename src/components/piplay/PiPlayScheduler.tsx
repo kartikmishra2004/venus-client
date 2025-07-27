@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, Calendar, Clock, User, Phone, CreditCard, MapPin } from 'lucide-react';
+import { Dispatch, SetStateAction } from 'react';
 
 interface PiPlayBooking {
     _id: string;
@@ -24,13 +25,35 @@ interface PiPlayBooking {
     updatedAt?: string;
 }
 
+type FormDataType = {
+    fullName: string;
+    email: string;
+    phone: string;
+    paymentMode: 'cash' | 'upi';
+    teamName: string;
+    sportType: string;
+    courtNumber: number;
+    bookingDuration: string;
+    advanceAmount: number;
+    pendingAmount: number;
+    totalAmount: number;
+    bookingDate: string;
+    startTime: string;
+    endTime: string;
+    hours: number;
+    status: 'confirmed' | 'pending' | 'cancelled' | 'completed' | string;
+    createdBy: string;
+};
+
+
 interface TurfBookingSchedulerProps {
     bookings?: PiPlayBooking[];
+    setFormData: Dispatch<SetStateAction<FormDataType>>;
+    formData: FormDataType;
+    setShowForm: (params: boolean) => void;
 }
 
-const PiPlayScheduler: React.FC<TurfBookingSchedulerProps> = ({
-    bookings
-}) => {
+const PiPlayScheduler: React.FC<TurfBookingSchedulerProps> = ({ bookings = [], setFormData, formData, setShowForm }) => {
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
     const [selectedBooking, setSelectedBooking] = useState<PiPlayBooking | null>(null);
 
@@ -79,10 +102,7 @@ const PiPlayScheduler: React.FC<TurfBookingSchedulerProps> = ({
 
     const getBookingsForDate = (date: Date): PiPlayBooking[] => {
         const dateStr = formatDate(date);
-        return bookings?.filter(booking => {
-            const bookingDateStr = booking.bookingDate.slice(0, 10);
-            return bookingDateStr === dateStr;
-        }) || [];
+        return bookings.filter(booking => booking.bookingDate.slice(0, 10) === dateStr);
     };
 
     const generateCalendarDays = (): Date[] => {
@@ -144,6 +164,19 @@ const PiPlayScheduler: React.FC<TurfBookingSchedulerProps> = ({
         }
     };
 
+    const handleDateCellClick = (date: Date, dayBookings: PiPlayBooking[]) => {
+        if (dayBookings.length > 0) {
+            setSelectedBooking(dayBookings[0]);
+        } else {
+            const bookingDate = formatDate(date).toString();
+            setShowForm(true);
+            setFormData({
+                ...formData,
+                bookingDate: bookingDate,
+            })
+        }
+    };
+
     return (
         <div className="bg-zinc-900 rounded-lg border p-4 text-xs">
             <div className="max-w-6xl mx-auto">
@@ -192,14 +225,25 @@ const PiPlayScheduler: React.FC<TurfBookingSchedulerProps> = ({
                     <div className="grid grid-cols-7">
                         {calendarDays.map((day, index) => {
                             const dayBookings = getBookingsForDate(day);
+                            const isInCurrentMonth = isCurrentMonth(day);
+                            const isTodayDate = isToday(day);
+
                             return (
                                 <div
                                     key={`${day.getTime()}-${index}`}
-                                    className={`min-h-16 border-r border-b last:border-r-0 p-1.5 ${!isCurrentMonth(day) ? 'bg-zinc-700' : 'bg-zinc-800'
-                                        } ${isToday(day) ? 'bg-blue-50' : ''}`}
+                                    className={
+                                        `min-h-16 border-r border-b last:border-r-0 p-1.5 
+                                         ${!isInCurrentMonth ? 'bg-zinc-700' : 'bg-zinc-800'}
+                                         ${isTodayDate ? 'bg-blue-50' : ''}
+                                         ${isInCurrentMonth ? 'cursor-pointer hover:bg-zinc-600 transition-colors' : 'cursor-default'}
+                                        `
+                                    }
+                                    tabIndex={isInCurrentMonth ? 0 : -1}
+                                    onClick={() => isInCurrentMonth && handleDateCellClick(day, dayBookings)}
+                                    aria-disabled={!isInCurrentMonth}
                                 >
-                                    <div className={`text-xs font-medium mb-1 ${isToday(day) ? 'text-primary' :
-                                        !isCurrentMonth(day) ? 'text-gray-400' : 'text-zinc-200'
+                                    <div className={`text-xs font-medium mb-1 ${isTodayDate ? 'text-primary' :
+                                        !isInCurrentMonth ? 'text-gray-400' : 'text-zinc-200'
                                         }`}>
                                         {day.getDate()}
                                     </div>
@@ -207,11 +251,14 @@ const PiPlayScheduler: React.FC<TurfBookingSchedulerProps> = ({
                                         {dayBookings.map(booking => (
                                             <div
                                                 key={booking._id}
-                                                onClick={() => handleBookingClick(booking)}
+                                                onClick={e => {
+                                                    e.stopPropagation(); // Prevent parent cell click
+                                                    handleBookingClick(booking);
+                                                }}
                                                 className={`${getBookingColor(booking.sportType)} text-white text-[10px] p-1 rounded cursor-pointer hover:opacity-80 transition-opacity`}
                                                 role="button"
                                                 tabIndex={0}
-                                                onKeyDown={(e) => {
+                                                onKeyDown={e => {
                                                     if (e.key === 'Enter' || e.key === ' ') {
                                                         e.preventDefault();
                                                         handleBookingClick(booking);
@@ -287,34 +334,22 @@ const PiPlayScheduler: React.FC<TurfBookingSchedulerProps> = ({
                                 <div className="flex items-center space-x-2">
                                     <MapPin className="w-4 h-4 text-zinc-400 flex-shrink-0" />
                                     <div>
-                                        <div className="text-xs text-zinc-200">
-                                            Sport type:
-                                        </div>
-                                        <div className="text-[10px] text-gray-500 capitalize">
-                                            {selectedBooking.sportType}
-                                        </div>
+                                        <div className="text-xs text-zinc-200">Sport type:</div>
+                                        <div className="text-[10px] text-gray-500 capitalize">{selectedBooking.sportType}</div>
                                     </div>
                                 </div>
                                 <div className="flex items-center space-x-2">
                                     <MapPin className="w-4 h-4 text-zinc-400 flex-shrink-0" />
                                     <div>
-                                        <div className="text-xs text-zinc-200">
-                                            Court number
-                                        </div>
-                                        <div className="text-[10px] text-gray-500 capitalize">
-                                            #{selectedBooking.courtNumber ? selectedBooking.courtNumber : '-'}
-                                        </div>
+                                        <div className="text-xs text-zinc-200">Court number:</div>
+                                        <div className="text-[10px] text-gray-500 capitalize">#{selectedBooking.courtNumber ?? '-'}</div>
                                     </div>
                                 </div>
                                 <div className="flex items-center space-x-2">
                                     <CreditCard className="w-4 h-4 text-gray-400 flex-shrink-0" />
                                     <div>
-                                        <div className="text-xs">
-                                            Advance: {formatCurrency(selectedBooking.advanceAmount)}
-                                        </div>
-                                        <div className="text-xs">
-                                            Pending: {selectedBooking.pendingAmount !== undefined ? formatCurrency(selectedBooking.pendingAmount) : '-'}
-                                        </div>
+                                        <div className="text-xs">Advance: {formatCurrency(selectedBooking.advanceAmount)}</div>
+                                        <div className="text-xs">Pending: {formatCurrency(selectedBooking.pendingAmount)}</div>
                                         <div className="text-[10px] text-gray-500 capitalize">
                                             Payment Mode: {selectedBooking.paymentMode}
                                         </div>
@@ -334,4 +369,4 @@ const PiPlayScheduler: React.FC<TurfBookingSchedulerProps> = ({
     );
 };
 
-export default PiPlayScheduler;
+export default PiPlayScheduler; 

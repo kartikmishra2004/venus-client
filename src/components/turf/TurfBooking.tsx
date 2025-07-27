@@ -25,6 +25,24 @@ interface TurfBooking {
     createdBy: string;
     createdAt: string;
 }
+type FormDataType = {
+    fullName: string;
+    email: string;
+    phone: string;
+    paymentMode: 'cash' | 'upi';
+    bookingType: 'turf-wise' | 'bulk';
+    teamName: string;
+    advanceAmount: number;
+    pendingAmount: number;
+    totalAmount: number;
+    bookingDate: string;
+    startTime: string;
+    endTime: string;
+    hours: number;
+    bookingDuration: string;
+    turfSize: '10000' | '6500';
+    createdBy: string;
+};
 
 interface TurfBookingProps {
     sessionId: string;
@@ -41,7 +59,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
     const [filterStatus, setFilterStatus] = useState<'confirmed' | 'paid' | 'all' | string>('all');
     const [bookingId, setBookingId] = useState('');
 
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<FormDataType>({
         fullName: '',
         email: '',
         phone: '',
@@ -60,7 +78,6 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
         createdBy: 'Staff'
     });
     const today = new Date().toISOString().split("T")[0];
-
     useEffect(() => {
         fetchBookings();
     }, []);
@@ -253,7 +270,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                     </div>
                 </div>
             ) : (
-                <Scheduler bookings={bookings} />
+                <Scheduler setFormData={setFormData} formData={formData} setShowForm={setShowForm} bookings={bookings} />
             )
             }
             <div className="bg-white dark:bg-zinc-900 p-4 rounded-lg shadow-sm border">

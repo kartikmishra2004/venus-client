@@ -240,7 +240,7 @@ const PiPlayBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                     </div>
                 </div>
             ) : (
-                <PiPlayScheduler bookings={bookings} />
+                <PiPlayScheduler formData={formData} setFormData={setFormData} setShowForm={setShowForm} bookings={bookings} />
             )}
             <div className="bg-white dark:bg-zinc-900 p-4 rounded-lg shadow-sm border">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
