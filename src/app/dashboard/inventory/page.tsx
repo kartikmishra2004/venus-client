@@ -330,7 +330,7 @@ export default function Inventory() {
                     <div className="lg:col-span-3">
                         { }
                         <div className="bg-zinc-900 rounded-lg border border-zinc-800">
-                            <div className="p-6 border-b border-zinc-800">
+                            <div className="p-4 border-b border-zinc-800">
                                 <div className="flex items-center justify-between">
                                     <h3 className="font-medium">Recent Transactions</h3>
                                     <div className="flex gap-2">
@@ -556,7 +556,7 @@ function TransactionRow({ transaction, onViewBill }: {
     onViewBill: (id: string) => void;
 }) {
     return (
-        <div className="p-4 hover:bg-zinc-800/50 transition-colors">
+        <div className="p-3 hover:bg-zinc-800/50 transition-colors">
             <div className="flex items-center justify-between">
                 <div className="flex items-start gap-4 flex-1">
                     <div className={`w-3 h-3 rounded-full mt-2 ${transaction.type === 'buy' ? 'bg-blue-500' : 'bg-primary'}`} />
