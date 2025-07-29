@@ -6,7 +6,7 @@ const Turf = async () => {
     const session = await getSession()
     if (session)
         return (
-            <div className='w-full mt-14 flex p-10'>
+            <div className='md:w-full w-screen md:mt-14 flex md:p-10 md:px-10 px-4 md:mb-0 mb-10 mt-20'>
                 <TurfBooking sessionId={session.value} />
             </div>
         )
