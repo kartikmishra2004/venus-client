@@ -142,7 +142,7 @@ export const HeroParallax = () => {
   return (
     <div
       ref={ref}
-      className="h-[300vh] py-40 overflow-hidden  antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="min-h-[280vh] md:py-40 py-10 overflow-hidden  antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
       <Header />
       <motion.div
@@ -189,10 +189,10 @@ export const HeroParallax = () => {
 export const Header = () => {
   return (
     <div className="max-w-7xl z-10 relative mx-auto py-20 md:py-10 px-4 w-full left-0 top-0">
-      <h1 className="text-2xl md:text-5xl font-bold dark:text-zinc-100">
+      <h1 className="text-3xl md:text-5xl font-bold dark:text-zinc-100">
         Welcome to <br /> Venus Sports Arena
       </h1>
-      <p className="max-w-2xl text-base md:text-md mt-4 dark:text-zinc-400">
+      <p className="max-w-2xl md:text-base text-sm md:text-md mt-4 dark:text-zinc-400">
         At Venus Sports Arena, sports is more than just a game — it&apos;s a passion that fuels dreams, a lifestyle that inspires health and discipline, and a powerful force that brings people together. We&apos;re not just a venue; we are Indore&apos;s ultimate sports hub — a vibrant space where athletes strive for excellence, enthusiasts chase their goals, professionals sharpen their skills, and families share unforgettable moments. Every corner of our arena pulses with the spirit of the game, building a community united by energy, excitement, and endless possibilities.
       </p>
       <Link href={'/dashboard/turf'}>
@@ -222,7 +222,7 @@ export const ProductCard = ({
         x: translate,
       }}
       key={product.title}
-      className="group/product h-96 w-[30rem] relative shrink-0"
+      className="group/product h-96 md:w-[30rem] w-[17rem] rounded-lg overflow-hidden relative shrink-0"
     >
       <div
         className="block group-hover/product:shadow-2xl "
