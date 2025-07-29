@@ -3,8 +3,8 @@ import React from 'react';
 
 const AboutUs = () => {
     return (
-        <section className="mt-24 text-white px-6 py-12 mb-10 max-w-7xl mx-auto">
-            <h2 className="text-3xl font-semibold mb-8 text-center">Welcome to Venus Sports Arena - Indore&apos;s Premier Sporting Destination</h2>
+        <section className="md:mt-24 mt-12 text-white px-4 py-12 mb-10 max-w-7xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold dark:text-zinc-100 mb-8 md:text-center">Welcome to Venus Sports Arena - Indore&apos;s Premier Sporting Destination</h2>
 
             <div className="flex flex-col md:flex-row items-center gap-8 mb-12">
                 <Image width={100} height={100} src="/9.webp" alt="Indoor Football Turf" className="w-full md:w-1/2 max-h-[60vh] object-contain rounded-lg shadow-lg" />
@@ -50,7 +50,7 @@ const AboutUs = () => {
                 </div>
             </div>
 
-            <div className="p-8 text-center">
+            <div className="py-8 text-center">
                 <h3 className="text-2xl font-semibold mb-4">Our Vision: <span className="text-primary">Shaping the Future of Sports</span></h3>
                 <p className="text-zinc-400 mb-8">Were driven by two core principles:</p>
                 <div className="flex flex-col md:flex-row justify-center gap-10 max-w-4xl mx-auto">

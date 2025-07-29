@@ -198,7 +198,7 @@ export const Header = () => {
       <Link href={'/dashboard/turf'}>
         <Button size={"lg"} className="text-zinc-50 mt-4 mr-3 cursor-pointer">Dashboard</Button>
       </Link>
-      <Link href={'/dashboard/turf'}>
+      <Link href={'/aboutus'}>
         <Button size={"lg"} variant={"outline"} className="text-zinc-50 mt-4 cursor-pointer">Learn more</Button>
       </Link>
     </div>
