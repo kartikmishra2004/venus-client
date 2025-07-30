@@ -111,9 +111,9 @@ const UpdatePayment = ({ setShowModal, bookingId }: UpdatePaymentProps) => {
         );
     }
 
-    const totalAmount = booking.totalAmount || 9000;
-    const advanceAmount = booking.advanceAmount || 4500;
-    const pendingAmount = booking.pendingAmount || 4500;
+    const totalAmount = booking.totalAmount;
+    const advanceAmount = booking.advanceAmount;
+    const pendingAmount = booking.pendingAmount;
     const paymentPercentage = (advanceAmount / totalAmount) * 100;
 
     return (
