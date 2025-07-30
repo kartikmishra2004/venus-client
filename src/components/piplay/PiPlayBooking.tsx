@@ -180,7 +180,7 @@ const PiPlayBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
     const deleteBooking = async (id: string) => {
         if (window.confirm('Are you sure you want to delete this booking?')) {
             try {
-                const response = await fetch(`https://venus-server.vercel.app/api/piplay/${id}`, {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/piplay/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${sessionId}`,

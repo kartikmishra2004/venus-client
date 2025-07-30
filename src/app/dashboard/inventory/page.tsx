@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState } from "react";
 import { Calendar, Package, TrendingUp, TrendingDown, Plus, Filter, Search, Eye, X } from "lucide-react";
+import SidebarMobileOpenButton from "@/components/SidebarMobileOpenButton";
 
 type TransactionType = "buy" | "sell";
 
@@ -222,20 +223,21 @@ export default function Inventory() {
     });
 
     return (
-        <div className="bg-zinc-950 min-h-screen text-zinc-200 mt-18">
+        <div className="bg-zinc-950 px-4 min-h-screen text-zinc-200 md:mt-18 mt-24">
+            <SidebarMobileOpenButton />
             <div>
-                <div className="p-6">
-                    <div className="flex items-center justify-between">
+                <div className="py-6">
+                    <div className="flex md:flex-row flex-col md:gap-0 gap-4 md:items-center justify-between">
                         <div>
-                            <h1 className="text-2xl font-semibold text-zinc-200 flex items-center gap-2">
-                                <Package className="w-6 h-6" />
+                            <h1 className="md:text-2xl text-lg font-semibold text-zinc-200 flex items-center gap-2">
+                                <Package className="w-6 h-6 md:block hidden" />
                                 Inventory Management
                             </h1>
-                            <p className="text-zinc-400 mt-1">Manage inventory transactions and track stock</p>
+                            <p className="text-zinc-400 md:mt-1 md:text-sm text-xs">Manage inventory transactions and track stock</p>
                         </div>
                         <button
                             onClick={() => setShowCreateForm(true)}
-                            className="bg-primary cursor-pointer hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+                            className="bg-primary w-max cursor-pointer hover:bg-emerald-700 text-white  md:text-sm text-xs font-medium px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
                         >
                             <Plus className="w-4 h-4" />
                             New Transaction
@@ -244,7 +246,7 @@ export default function Inventory() {
                 </div>
             </div>
 
-            <div className="p-6">
+            <div className="py-6">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
                     { }
                     <div className="lg:col-span-1 space-y-6">
@@ -321,21 +323,17 @@ export default function Inventory() {
                                 </div>
                             </div>
                         </div>
-
-                        { }
                         <SummaryCard summary={summary} />
                     </div>
-
-                    { }
-                    <div className="lg:col-span-3">
-                        { }
+                    <div className="col-span-1 lg:col-span-3">
                         <div className="bg-zinc-900 rounded-lg border border-zinc-800">
                             <div className="p-4 border-b border-zinc-800">
-                                <div className="flex items-center justify-between">
-                                    <h3 className="font-medium">Recent Transactions</h3>
-                                    <div className="flex gap-2">
+                                <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                                    <h3 className="font-medium text-lg md:text-base">Recent Transactions</h3>
+
+                                    <div className="flex flex-col gap-2 sm:flex-row">
                                         <select
-                                            className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-1 text-sm"
+                                            className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 sm:py-1 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                                             value={sortBy}
                                             onChange={(e) => setSortBy(e.target.value as keyof InventoryTransaction)}
                                         >
@@ -344,7 +342,7 @@ export default function Inventory() {
                                             <option value="totalAmount">Amount</option>
                                         </select>
                                         <select
-                                            className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-1 text-sm"
+                                            className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 sm:py-1 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                                             value={sortOrder}
                                             onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
                                         >
@@ -354,15 +352,14 @@ export default function Inventory() {
                                     </div>
                                 </div>
                             </div>
-
                             <div className="divide-y divide-zinc-800">
                                 {loading ? (
-                                    <div className="p-8 text-center text-zinc-400">
+                                    <div className="p-8 text-center text-zinc-400 text-base">
                                         <div className="animate-spin w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full mx-auto mb-2"></div>
                                         Loading transactions...
                                     </div>
                                 ) : transactions.length === 0 ? (
-                                    <div className="p-8 text-center text-zinc-400">
+                                    <div className="p-8 text-center text-zinc-400 text-base">
                                         <Package className="w-12 h-12 mx-auto mb-2 opacity-50" />
                                         No transactions found.
                                     </div>
@@ -372,19 +369,18 @@ export default function Inventory() {
                                     ))
                                 )}
                             </div>
-
-                            { }
-                            {!loading && transactions.length > 0 && (
-                                <div className="p-4 border-t border-zinc-800">
-                                    <Pagination page={page} totalPages={totalPages} setPage={setPage} />
-                                </div>
-                            )}
+                            {
+                                !loading && transactions.length > 0 && (
+                                    <div className="p-4 border-t border-zinc-800">
+                                        <Pagination page={page} totalPages={totalPages} setPage={setPage} />
+                                    </div>
+                                )
+                            }
                         </div>
                     </div>
+
                 </div>
             </div>
-
-            { }
             {showCreateForm && (
                 <div className="fixed inset-0 bg-black mt-12 bg-opacity-50 flex items-center justify-center p-4 z-50">
                     <div className="bg-zinc-900 rounded-lg border border-zinc-800 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -557,25 +553,27 @@ function TransactionRow({ transaction, onViewBill }: {
 }) {
     return (
         <div className="p-3 hover:bg-zinc-800/50 transition-colors">
-            <div className="flex items-center justify-between">
-                <div className="flex items-start gap-4 flex-1">
-                    <div className={`w-3 h-3 rounded-full mt-2 ${transaction.type === 'buy' ? 'bg-blue-500' : 'bg-primary'}`} />
-                    <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                            <h4 className="font-medium text-zinc-200">{transaction.productName}</h4>
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${transaction.type === 'buy'
-                                ? 'bg-blue-900 text-blue-200'
-                                : 'bg-emerald-900 text-emerald-200'
-                                }`}>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-start gap-4 flex-1 w-full sm:w-auto">
+                    <div
+                        className={`w-3 h-3 rounded-full mt-2 ${transaction.type === 'buy' ? 'bg-blue-500' : 'bg-primary'}`}
+                    />
+                    <div className="flex-1 min-w-0">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
+                            <h4 className="font-medium text-zinc-200 truncate">{transaction.productName}</h4>
+                            <span
+                                className={`px-2 py-1 w-max rounded-full text-xs font-medium ${transaction.type === 'buy' ? 'bg-blue-900 text-blue-200' : 'bg-emerald-900 text-emerald-200'
+                                    }`}
+                            >
                                 {transaction.type === 'buy' ? 'Purchase' : 'Sale'}
                             </span>
                         </div>
 
-                        <div className="text-sm text-zinc-400 mb-2">
+                        <div className="text-sm text-zinc-400 mb-2 truncate">
                             {transaction.description || 'No description'}
                         </div>
 
-                        <div className="flex items-center gap-4 text-sm text-zinc-300">
+                        <div className="flex flex-wrap gap-4 text-sm text-zinc-300">
                             <span>Qty: {transaction.quantity}</span>
                             <span>Rate: ₹{transaction.amountPerPiece.toLocaleString()}</span>
                             <span>By: {transaction.createdBy}</span>
@@ -583,18 +581,18 @@ function TransactionRow({ transaction, onViewBill }: {
                     </div>
                 </div>
 
-                <div className="text-right">
-                    <div className="text-lg font-semibold text-zinc-200 mb-1">
+                <div className="text-right w-full sm:w-auto">
+                    <div className="text-lg font-semibold text-zinc-200 mb-1 truncate">
                         ₹{transaction.totalAmount.toLocaleString()}
                     </div>
                     <div className="text-sm text-zinc-400 mb-2">
                         {new Date(transaction.transactionDate).toLocaleDateString('en-IN')}
                     </div>
-                    <div className="flex gap-2">
-                        {transaction.type === "sell" && (
+                    <div className="flex gap-2 justify-end">
+                        {transaction.type === 'sell' && (
                             <button
                                 onClick={() => onViewBill(transaction._id)}
-                                className="flex cursor-pointer items-center gap-1 px-3 py-1 bg-zinc-700 hover:bg-zinc-600 disabled:opacity-50 rounded-lg text-xs transition-colors"
+                                className="flex cursor-pointer items-center gap-1 px-3 py-1 bg-zinc-700 hover:bg-zinc-600 disabled:opacity-50 rounded-lg text-xs transition-colors whitespace-nowrap"
                             >
                                 <Eye className="w-3 h-3" />
                                 Bill
@@ -655,74 +653,68 @@ function SummaryCard({ summary }: { summary: BuySellSummary | null }) {
 
 function BillModal({ billData, onClose }: { billData: BillData; onClose: () => void }) {
     return (
-        <div className="fixed mt-12 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 z-50">
-            <div className="bg-zinc-900 rounded-lg border border-zinc-800 w-full max-w-2xl max-h-[85vh] overflow-y-auto">
-                <div className="p-4 border-b border-zinc-800">
-                    <div className="flex items-center justify-between">
-                        <h2 className="text-lg font-semibold"></h2>
-                        <div className="flex gap-2">
-                            <button
-                                onClick={onClose}
-                                className="text-zinc-400 hover:text-zinc-200 p-1.5"
-                            >
-                                <X className="w-4 h-4" />
-                            </button>
-                        </div>
-                    </div>
+        <div className="fixed mt-12 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-1 z-50">
+            <div className="bg-zinc-900 rounded-lg border border-zinc-800 w-full max-w-lg max-h-[70vh] overflow-y-auto p-3">
+                <div className="flex items-center justify-between border-b border-zinc-800 pb-2 mb-2">
+                    <h2 className="text-base font-semibold"></h2>
+                    <button
+                        onClick={onClose}
+                        className="text-zinc-400 hover:text-zinc-200 p-1"
+                    >
+                        <X className="w-4 h-4" />
+                    </button>
                 </div>
 
-                <div className="p-4">
-                    <div className="bg-zinc-900 border text-zinc-300 p-4 rounded">
-                        <div className="flex justify-between items-start mb-6">
-                            <div>
-                                <h1 className="text-xl font-bold mb-1">Bill</h1>
-                                <p className="text-sm text-zinc-400">Date: {billData.date}</p>
-                            </div>
-                            <div className="text-right text-sm text-zinc-400">
-                                <h2 className="text-base font-bold text-zinc-300">{billData.company.name}</h2>
-                                <p>Indore M.P.</p>
-                                <p>+91 9981011811</p>
-                                <p>info@venussportsarena.com</p>
-                            </div>
+                <div className="bg-zinc-900 border text-zinc-300 p-3 rounded text-sm">
+                    <div className="flex justify-between items-start mb-4">
+                        <div>
+                            <h1 className="text-lg font-bold mb-0.5">Bill</h1>
+                            <p className="text-xs text-zinc-400">Date: {billData.date}</p>
                         </div>
+                        <div className="text-right text-xs text-zinc-400">
+                            <h2 className="font-bold text-zinc-300">{billData.company.name}</h2>
+                            <p>Indore M.P.</p>
+                            <p>+91 9981011811</p>
+                            <p>info@venussportsarena.com</p>
+                        </div>
+                    </div>
 
-                        <table className="w-full border-collapse border text-sm mb-4">
-                            <thead>
-                                <tr className="bg-zinc-800">
-                                    <th className="border p-2 text-left">Description</th>
-                                    <th className="border p-2 text-right">Qty</th>
-                                    <th className="border p-2 text-right">Rate</th>
-                                    <th className="border p-2 text-right">Amount</th>
+                    <table className="w-full border-collapse border text-xs mb-3">
+                        <thead>
+                            <tr className="bg-zinc-800">
+                                <th className="border p-1 text-left">Description</th>
+                                <th className="border p-1 text-right">Qty</th>
+                                <th className="border p-1 text-right">Rate</th>
+                                <th className="border p-1 text-right">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {billData.items.map((item, i) => (
+                                <tr key={i}>
+                                    <td className="border p-1">{item.description}</td>
+                                    <td className="border p-1 text-right">{item.quantity}</td>
+                                    <td className="border p-1 text-right">₹{item.rate.toFixed(2)}</td>
+                                    <td className="border p-1 text-right">₹{item.amount.toFixed(2)}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {billData.items.map((item, i) => (
-                                    <tr key={i}>
-                                        <td className="border p-2">{item.description}</td>
-                                        <td className="border p-2 text-right">{item.quantity}</td>
-                                        <td className="border p-2 text-right">₹{item.rate.toFixed(2)}</td>
-                                        <td className="border p-2 text-right">₹{item.amount.toFixed(2)}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                            ))}
+                        </tbody>
+                    </table>
 
-                        <div className="flex justify-end mb-4 text-sm">
-                            <div className="w-52">
-                                <div className="flex justify-between mb-1">
-                                    <span>Subtotal:</span>
-                                    <span>{billData.subtotalFormatted}</span>
-                                </div>
-                                <div className="flex justify-between font-bold border-t pt-1 text-base">
-                                    <span>Total:</span>
-                                    <span>{billData.totalFormatted}</span>
-                                </div>
+                    <div className="flex justify-end mb-3">
+                        <div className="w-40 text-xs">
+                            <div className="flex justify-between mb-0.5">
+                                <span>Subtotal:</span>
+                                <span>{billData.subtotalFormatted}</span>
+                            </div>
+                            <div className="flex justify-between font-bold border-t pt-0.5 text-sm">
+                                <span>Total:</span>
+                                <span>{billData.totalFormatted}</span>
                             </div>
                         </div>
+                    </div>
 
-                        <div className="text-center mt-6 text-xs text-zinc-400">
-                            Thank you for your business!
-                        </div>
+                    <div className="text-center mt-4 text-[10px] text-zinc-400">
+                        Thank you for your business!
                     </div>
                 </div>
             </div>
