@@ -232,7 +232,7 @@ const PiPlayScheduler: React.FC<TurfBookingSchedulerProps> = ({ bookings = [], s
                                 <div
                                     key={`${day.getTime()}-${index}`}
                                     className={
-                                        `min-h-16 border-r border-b last:border-r-0 p-1.5 
+                                        `md:min-h-16 min-h-12 border-r border-b last:border-r-0 p-1.5 
                                          ${!isInCurrentMonth ? 'bg-zinc-700' : 'bg-zinc-800'}
                                          ${isTodayDate ? 'bg-blue-50' : ''}
                                          ${isInCurrentMonth ? 'cursor-pointer hover:bg-zinc-600 transition-colors' : 'cursor-default'}
@@ -252,10 +252,10 @@ const PiPlayScheduler: React.FC<TurfBookingSchedulerProps> = ({ bookings = [], s
                                             <div
                                                 key={booking._id}
                                                 onClick={e => {
-                                                    e.stopPropagation(); // Prevent parent cell click
+                                                    e.stopPropagation();
                                                     handleBookingClick(booking);
                                                 }}
-                                                className={`${getBookingColor(booking.sportType)} text-white text-[10px] p-1 rounded cursor-pointer hover:opacity-80 transition-opacity`}
+                                                className={`${getBookingColor(booking.sportType)} text-white text-[10px] sm:p-1 p-2 sm:rounded rounded-full cursor-pointer hover:opacity-80 transition-opacity`}
                                                 role="button"
                                                 tabIndex={0}
                                                 onKeyDown={e => {
@@ -265,8 +265,8 @@ const PiPlayScheduler: React.FC<TurfBookingSchedulerProps> = ({ bookings = [], s
                                                     }
                                                 }}
                                             >
-                                                <div className="font-medium truncate">{booking.teamName}</div>
-                                                <div className="flex items-center space-x-0.5">
+                                                <div className="font-medium sm:block hidden truncate">{booking.teamName}</div>
+                                                <div className="sm:flex hidden items-center space-x-0.5">
                                                     <Clock className="w-2 h-2" />
                                                     <span>{formatTime(booking.startTime)}</span>
                                                 </div>

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Search, Calendar, Clock, Edit, Trash2, Users, LandPlot } from 'lucide-react';
 import PiPlayScheduler from './PiPlayScheduler';
 import UpdatePayment from './UpdatePayment';
+import SidebarMobileOpenButton from '../SidebarMobileOpenButton';
 
 interface PiplayBooking {
     _id: string;
@@ -219,17 +220,18 @@ const PiPlayBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
     });
 
     return (
-        <div className="space-y-4 w-full">
+        <div className="space-y-4 w-full md:mt-0 mt-12">
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900 dark:text-zinc-100">Pi Play Bookings</h1>
-                    <p className="text-sm text-gray-600 dark:text-zinc-400 mt-1">Manage Pi Play bookings and reservations</p>
+                    <SidebarMobileOpenButton />
+                    <h1 className="md:text-2xl text-lg font-bold text-gray-900 dark:text-zinc-100">Pi Play Bookings</h1>
+                    <p className="md:text-sm text-xs text-gray-600 dark:text-zinc-400 mt-1">Manage Pi Play bookings and reservations</p>
                 </div>
                 <button
                     onClick={() => setShowForm(true)}
-                    className="flex items-center px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/80 cursor-pointer transition-colors"
+                    className="flex items-center md:px-4 px-2 md:py-2 py-1 bg-primary text-white md:text-sm text-xs font-medium rounded-lg hover:bg-primary/80 cursor-pointer transition-colors "
                 >
-                    <Plus className="w-4 h-4 mr-2" />
+                    <Plus className="w-4 h-4 mr-2 md:block hidden" />
                     New Booking
                 </button>
             </div>
@@ -290,7 +292,7 @@ const PiPlayBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                     </div>
                 ) : (
                     <div className="overflow-x-auto rounded-lg">
-                        <table className="w-full">
+                        <table className="md:w-full w-[290vw]">
                             <thead className="bg-gray-50 dark:bg-zinc-800 border-b">
                                 <tr>
                                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Customer</th>
