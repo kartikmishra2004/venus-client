@@ -3,9 +3,7 @@ import { ChevronRightIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "./ui/sidebar";
 
-interface SidebarMobileOpenButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> { }
-
-const SidebarMobileOpenButton: React.FC<SidebarMobileOpenButtonProps> = ({
+const SidebarMobileOpenButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
     className,
     ...props
 }) => {
