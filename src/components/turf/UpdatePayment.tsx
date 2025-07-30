@@ -76,7 +76,6 @@ const UpdatePayment = ({ setShowModal, bookingId }: UpdatePaymentProps) => {
             });
 
             const data = await response.json();
-            console.log(data)
             if (data.success) {
                 setShowModal(false);
                 setUpdateLoading(false);

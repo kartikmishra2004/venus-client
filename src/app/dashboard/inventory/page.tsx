@@ -199,7 +199,6 @@ export default function Inventory() {
             console.log(e);
         }
     }
-    console.log(billData)
     async function fetchBill(id: string) {
         setBillLoading(true);
         try {
@@ -382,11 +381,13 @@ export default function Inventory() {
                 </div>
             </div>
             {showCreateForm && (
-                <div className="fixed inset-0 bg-black mt-12 bg-opacity-50 flex items-center justify-center p-4 z-50">
-                    <div className="bg-zinc-900 rounded-lg border border-zinc-800 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-                        <div className="p-6 border-b border-zinc-800">
+                <div className="fixed w-full h-screen overflow-y-auto inset-0 bg-zinc-950 bg-opacity-50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-zinc-200 dark:bg-zinc-900 border rounded-lg max-w-2xl w-full md:mt-14 mt-32 overflow-y-auto">
+                        <div className="p-3 border-b">
                             <div className="flex items-center justify-between">
-                                <h2 className="text-xl font-semibold">Create New Transaction</h2>
+                                <h2 className="text-md font-semibold text-gray-900 dark:text-white">
+                                    Create New Transaction
+                                </h2>
                                 <button
                                     onClick={() => setShowCreateForm(false)}
                                     className="text-zinc-400 hover:text-zinc-200"
@@ -395,26 +396,36 @@ export default function Inventory() {
                                 </button>
                             </div>
                         </div>
-
-                        <form onSubmit={(e) => { e.preventDefault(); createTransaction(); }} className="p-6 space-y-4">
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                createTransaction();
+                            }}
+                            className="p-4 space-y-4"
+                        >
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium mb-2">Product Name *</label>
+                                    <label className="block text-sm font-medium text-zinc-800 dark:text-gray-300 mb-1">
+                                        Product Name *
+                                    </label>
                                     <input
                                         required
                                         type="text"
-                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 focus:outline-none focus:border-emerald-500"
+                                        className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                                         value={form.productName || ""}
                                         onChange={(e) => onInputChange("productName", e.target.value)}
                                     />
                                 </div>
-
                                 <div>
-                                    <label className="block text-sm font-medium mb-2">Transaction Type *</label>
+                                    <label className="block text-sm font-medium text-zinc-800 dark:text-gray-300 mb-1">
+                                        Transaction Type *
+                                    </label>
                                     <select
                                         value={form.type || "buy"}
-                                        onChange={(e) => onInputChange("type", e.target.value as TransactionType)}
-                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 focus:outline-none focus:border-emerald-500"
+                                        onChange={(e) =>
+                                            onInputChange("type", e.target.value as TransactionType)
+                                        }
+                                        className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                                         required
                                     >
                                         <option value="buy">Purchase</option>
@@ -422,84 +433,90 @@ export default function Inventory() {
                                     </select>
                                 </div>
                             </div>
-
                             <div>
-                                <label className="block text-sm font-medium mb-2">Description</label>
+                                <label className="block text-sm font-medium text-zinc-800 dark:text-gray-300 mb-1">
+                                    Description
+                                </label>
                                 <textarea
-                                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 focus:outline-none focus:border-emerald-500 h-20 resize-none"
+                                    className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white h-20 resize-none"
                                     value={form.description || ""}
                                     onChange={(e) => onInputChange("description", e.target.value)}
                                 />
                             </div>
-
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium mb-2">Quantity *</label>
+                                    <label className="block text-sm font-medium text-zinc-800 dark:text-gray-300 mb-1">
+                                        Quantity *
+                                    </label>
                                     <input
                                         required
                                         type="number"
                                         min={0}
                                         step={1}
-                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 focus:outline-none focus:border-emerald-500"
+                                        className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                                         value={form.quantity || ""}
                                         onChange={(e) => onInputChange("quantity", Number(e.target.value))}
                                     />
                                 </div>
-
                                 <div>
-                                    <label className="block text-sm font-medium mb-2">Amount Per Piece *</label>
+                                    <label className="block text-sm font-medium text-zinc-800 dark:text-gray-300 mb-1">
+                                        Amount Per Piece *
+                                    </label>
                                     <input
                                         required
                                         type="number"
                                         min={0}
                                         step="0.01"
-                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 focus:outline-none focus:border-emerald-500"
+                                        className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                                         value={form.amountPerPiece || ""}
-                                        onChange={(e) => onInputChange("amountPerPiece", Number(e.target.value))}
+                                        onChange={(e) =>
+                                            onInputChange("amountPerPiece", Number(e.target.value))
+                                        }
                                     />
                                 </div>
-
                                 <div>
-                                    <label className="block text-sm font-medium mb-2">Total Amount</label>
+                                    <label className="block text-sm font-medium text-zinc-800 dark:text-gray-300 mb-1">
+                                        Total Amount
+                                    </label>
                                     <input
                                         type="number"
-                                        className="w-full bg-zinc-700 border border-zinc-600 rounded-lg px-3 py-2 text-zinc-400"
+                                        className="w-full px-3 py-2 border rounded-md text-sm bg-zinc-300 dark:bg-zinc-700 text-zinc-400 dark:text-zinc-400"
                                         value={form.totalAmount || ""}
                                         readOnly
                                     />
                                 </div>
                             </div>
-
                             <div>
-                                <label className="block text-sm font-medium mb-2">Created By *</label>
+                                <label className="block text-sm font-medium text-zinc-800 dark:text-gray-300 mb-1">
+                                    Created By *
+                                </label>
                                 <input
                                     required
                                     type="text"
-                                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 focus:outline-none focus:border-emerald-500"
+                                    className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                                     value={form.createdBy || ""}
                                     onChange={(e) => onInputChange("createdBy", e.target.value)}
                                 />
                             </div>
-
                             {error && (
                                 <div className="bg-red-900 border border-red-700 rounded-lg p-3 text-red-200">
                                     {error}
                                 </div>
                             )}
-
-                            <div className="flex gap-3 pt-4">
-                                <button
-                                    type="submit"
-                                    className="flex-1 bg-primary hover:bg-emerald-700 text-white py-2 rounded-lg font-medium transition-colors"
-                                >
-                                    Create Transaction
-                                </button>
+                            <div className="flex justify-end space-x-3 pt-4 border-t">
                                 <button
                                     type="button"
                                     onClick={() => setShowCreateForm(false)}
-                                    className="px-6 bg-zinc-700 hover:bg-zinc-600 text-zinc-200 py-2 rounded-lg font-medium transition-colors"
+                                    className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-zinc-800 border rounded-md hover:bg-gray-50 dark:hover:bg-zinc-700 cursor-pointer"
                                 >
                                     Cancel
+                                </button>
+                                <button
+                                    disabled={!form.productName || !form.description || !form.quantity || !form.amountPerPiece || !form.totalAmount || !form.createdBy}
+                                    type="submit"
+                                    className="px-4 disabled:cursor-not-allowed disabled:bg-zinc-700 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/80 cursor-pointer"
+                                >
+                                    Create Transaction
                                 </button>
                             </div>
                         </form>

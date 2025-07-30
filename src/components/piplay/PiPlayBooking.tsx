@@ -221,15 +221,15 @@ const PiPlayBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
 
     return (
         <div className="space-y-4 w-full md:mt-0 mt-12">
-            <div className="flex justify-between items-center">
+            <div className="flex md:flex-row flex-col md:gap-0 gap-4 md:items-center justify-between">
                 <div>
                     <SidebarMobileOpenButton />
                     <h1 className="md:text-2xl text-lg font-bold text-gray-900 dark:text-zinc-100">Pi Play Bookings</h1>
-                    <p className="md:text-sm text-xs text-gray-600 dark:text-zinc-400 mt-1">Manage Pi Play bookings and reservations</p>
+                    <p className="md:text-sm text-xs text-gray-600 dark:text-zinc-400 md:mt-1">Manage Pi Play bookings and reservations</p>
                 </div>
                 <button
                     onClick={() => setShowForm(true)}
-                    className="flex items-center md:px-4 px-2 md:py-2 py-1 bg-primary text-white md:text-sm text-xs font-medium rounded-lg hover:bg-primary/80 cursor-pointer transition-colors "
+                    className="flex w-max items-center px-4 py-2 bg-primary text-white md:text-sm text-xs font-medium rounded-lg hover:bg-primary/80 cursor-pointer transition-colors "
                 >
                     <Plus className="w-4 h-4 mr-2 md:block hidden" />
                     New Booking
@@ -405,8 +405,8 @@ const PiPlayBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                 )}
             </div>
             {showForm && (
-                <div className="fixed inset-0 bg-zinc-950 bg-opacity-50 flex items-center justify-center p-4 z-50">
-                    <div className="bg-zinc-200 dark:bg-zinc-900 border rounded-lg max-w-2xl w-full mt-14 overflow-y-auto">
+                <div className="fixed w-full h-screen overflow-y-auto inset-0 bg-zinc-950 bg-opacity-50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-zinc-200 dark:bg-zinc-900 border rounded-lg max-w-2xl w-full md:mt-14 mt-96 overflow-y-auto">
                         <div className="p-3 border-b">
                             <h2 className="text-md font-semibold text-gray-900 dark:text-white">New Pi Play Booking</h2>
                         </div>
