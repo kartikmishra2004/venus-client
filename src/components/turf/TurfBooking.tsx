@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Search, Calendar, Clock, Edit, Trash2, Users, LandPlot } from 'lucide-react';
 import Scheduler from '../Scheduler';
 import UpdatePayment from './UpdatePayment';
+import SidebarMobileOpenButton from '../SidebarMobileOpenButton';
 
 interface TurfBooking {
     _id: string;
@@ -248,9 +249,10 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
     });
 
     return (
-        <div className="space-y-4 w-full">
+        <div className="space-y-4 w-full md:mt-0 mt-12">
             <div className="flex md:flex-row  justify-between items-center">
                 <div>
+                    <SidebarMobileOpenButton />
                     <h1 className="md:text-2xl text-lg font-bold text-gray-900 dark:text-zinc-100">Turf Bookings</h1>
                     <p className="md:text-sm text-xs text-gray-600 dark:text-zinc-400 mt-1">Manage turf bookings and reservations</p>
                 </div>

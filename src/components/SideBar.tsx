@@ -1,6 +1,5 @@
 'use client'
-
-import { LandPlot, Gamepad2, ChartNoAxesCombined, Warehouse, CalendarDays } from "lucide-react"
+import { LandPlot, Gamepad2, ChartNoAxesCombined, Warehouse, CalendarDays, X } from "lucide-react"
 import {
     Sidebar,
     SidebarContent,
@@ -11,11 +10,12 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    useSidebar,
 } from "@/components/ui/sidebar"
 import { NavUser } from "./ui/nav-user"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import clsx from "clsx" // optional, for clean class merging
+import clsx from "clsx"
 
 const items = [
     {
@@ -52,18 +52,28 @@ const user = {
 
 export function SideBar() {
     const pathname = usePathname()
+    const { setOpenMobile, isMobile } = useSidebar();
+
+    const handleCloseSidebar = () => {
+        if (isMobile) {
+            setOpenMobile(false);
+        }
+    }
 
     return (
-        <Sidebar className="pt-18 h-full">
+        <Sidebar className="h-full">
             <SidebarContent>
-                <SidebarGroup>
-                    <SidebarGroupLabel>Venus Sports Arena</SidebarGroupLabel>
+                <SidebarGroup className="pt-18">
+                    <div className="flex justify-between py-2">
+                        <SidebarGroupLabel>Venus Sports Arena</SidebarGroupLabel>
+                        {isMobile && <SidebarGroupLabel><X onClick={handleCloseSidebar} /></SidebarGroupLabel>}
+                    </div>
                     <SidebarGroupContent>
                         <SidebarMenu>
                             {items.map((item) => {
                                 const isActive = pathname.startsWith(item.url)
                                 return (
-                                    <SidebarMenuItem key={item.title}>
+                                    <SidebarMenuItem onClick={handleCloseSidebar} key={item.title}>
                                         <SidebarMenuButton
                                             asChild
                                             className={clsx(
