@@ -86,7 +86,7 @@ export default function EventForm({ event, onClose, onSave }: Props) {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-1.5 max-h-[80vh] overflow-y-auto">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-1.5 md:max-h-[80vh] overflow-y-auto">
             <h2 className="text-lg text-zinc-200 mb-1">{event?._id ? "Edit Event" : "Create Event"}</h2>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-1.5 px-2">

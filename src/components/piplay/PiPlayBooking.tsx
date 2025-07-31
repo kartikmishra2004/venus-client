@@ -484,22 +484,10 @@ const PiPlayBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                                     <input
                                         type="number"
                                         min={1}
+                                        max={2}
                                         required
                                         value={formData.courtNumber}
                                         onChange={(e) => handleFormChange('courtNumber', Number(e.target.value))}
-                                        className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Advance Amount (₹)
-                                    </label>
-                                    <input
-                                        type="number"
-                                        min={0}
-                                        required
-                                        value={formData.advanceAmount}
-                                        onChange={(e) => handleFormChange('advanceAmount', Number(e.target.value))}
                                         className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                                     />
                                 </div>
@@ -550,6 +538,19 @@ const PiPlayBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
                                         required
                                         value={formData.endTime}
                                         onChange={(e) => handleFormChange('endTime', e.target.value)}
+                                        className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Advance Amount (₹)
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min={0}
+                                        required
+                                        value={formData.advanceAmount}
+                                        onChange={(e) => handleFormChange('advanceAmount', Number(e.target.value))}
                                         className="w-full px-3 py-2 border rounded-md text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                                     />
                                 </div>

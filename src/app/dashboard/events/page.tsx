@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import EventCard from "@/components/events/Eventcard"
 import EventForm from "@/components/events/EventForm"
 import EventFilter from "@/components/events/EventFilter"
+import SidebarMobileOpenButton from "@/components/SidebarMobileOpenButton"
 
 export type EventType = {
     _id?: string
@@ -136,11 +137,15 @@ export default function Events() {
     }
 
     return (
-        <div className="bg-zinc-950 mt-14 px-4 min-h-screen flex flex-col">
-            <div className="w-full min-h-[55vh] px-2 py-8">
-                <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-2xl font-bold text-zinc-200">Event Management</h1>
-                    <button className="bg-zinc-800 border text-zinc-200 rounded-lg px-4 py-2 hover:bg-zinc-700" onClick={openCreate}>
+        <div className="bg-zinc-950 md:mt-14 mt-24 px-4 min-h-screen flex flex-col">
+            <SidebarMobileOpenButton />
+            <div className="w-full min-h-[55vh] py-8">
+                <div className="flex md:flex-row flex-col md:gap-0 gap-3 md:items-center justify-between mb-6">
+                    <div className="">
+                        <h1 className="md:text-2xl text-lg font-semibold text-zinc-200 flex items-center gap-2">Event Management</h1>
+                        <p className="text-zinc-400 md:text-sm text-xs">Manage enents easily.</p>
+                    </div>
+                    <button className="bg-primary w-max cursor-pointer hover:bg-emerald-700 text-white  md:text-sm text-xs font-medium px-4 py-2 rounded-lg flex items-center gap-2 transition-colors" onClick={openCreate}>
                         + Create Event
                     </button>
                 </div>
@@ -176,8 +181,8 @@ export default function Events() {
                 </div>
             </div>
             {modalOpen && (
-                <div className="fixed inset-0 mt-12 bg-zinc-950 bg-opacity-60 z-30 flex items-center justify-center">
-                    <div className="bg-zinc-900 border rounded-lg w-full max-w-3xl p-6">
+                <div className="fixed inset-0 md:mt-12 mt-20 bg-zinc-950 bg-opacity-60 z-[9999] flex items-center justify-center">
+                    <div className="bg-zinc-900 border w-full max-w-3xl p-4 md:p-6 max-h-[90vh] overflow-y-auto rounded">
                         <EventForm event={editEvent} onClose={closeModal} onSave={onSave} />
                     </div>
                 </div>
