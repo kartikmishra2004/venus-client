@@ -124,6 +124,7 @@ const TurfBooking: React.FC<TurfBookingProps> = ({ sessionId }) => {
 
     // Enhanced form change handler
     const handleFormChange = (field: keyof typeof formData, value: string | number) => {
+        // eslint-disable-next-line prefer-const
         let newForm = { ...formData, [field]: value };
 
         // Live-calculate hours, totalAmount, pending if relevant fields updated
