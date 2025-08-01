@@ -189,22 +189,22 @@ export default function Events() {
             )}
             {detail && (
                 <div className="fixed inset-0 bg-zinc-950 bg-opacity-50 z-40 flex items-center justify-center">
-                    <div className="bg-zinc-900 border rounded-lg w-full max-w-3xl p-6 relative">
+                    <div className="bg-zinc-900 md:h-max h-screen mt-28 border rounded-lg w-full max-w-3xl p-6 relative">
                         <button className="absolute top-5 right-5 text-zinc-200" onClick={() => setDetail(null)}>✕</button>
                         <div className="flex flex-col md:flex-row gap-4">
-                            {detail.imageURL && <img src={detail.imageURL} alt={detail.title} className="md:w-52 w-full rounded-lg border object-cover" />}
+                            {detail.imageURL && <img src={detail.imageURL} alt={detail.title} className="md:w-52 w-full md:h-full h-32 md:mt-0 mt-10 rounded-lg border object-cover" />}
                             <div className="flex-1">
-                                <h2 className="text-2xl font-semibold text-zinc-200 mb-2">{detail.title}</h2>
-                                <p className="text-zinc-400 mb-2">{detail.description}</p>
-                                <p className="text-zinc-300 mb-1"><b>Date:</b> {new Date(detail.date).toLocaleDateString()}</p>
-                                <p className="text-zinc-300 mb-1"><b>Time:</b> {detail.startTime} - {detail.endTime}</p>
-                                <p className="text-zinc-300 mb-1"><b>Venue:</b> {detail.location.venue}</p>
-                                <p className="text-zinc-300 mb-1"><b>Address:</b> {detail.location.address}, {detail.location.city}, {detail.location.state} {detail.location.zipCode}</p>
-                                <p className="text-zinc-300 mb-1"><b>Organizer:</b> {detail.organizer.name}, {detail.organizer.email}, {detail.organizer.phone}</p>
-                                <p className="text-zinc-300 mb-1"><b>Category:</b> {detail.category}</p>
-                                <p className="text-zinc-300 mb-1"><b>Price:</b> ₹{detail.price}</p>
-                                <p className="text-zinc-300 mb-1"><b>Registration Deadline:</b> {new Date(detail.registrationDeadline).toLocaleDateString()}</p>
-                                <p className="text-zinc-300 mb-2"><b>Status:</b> <span className="capitalize">{detail.status}</span></p>
+                                <h2 className="md:text-2xl text-xl font-semibold text-zinc-200 mb-2">{detail.title}</h2>
+                                <p className="text-zinc-400 mb-2 md:text-base text-sm">{detail.description}</p>
+                                <p className="text-zinc-300 mb-1 md:text-base text-sm"><b>Date:</b> {new Date(detail.date).toLocaleDateString()}</p>
+                                <p className="text-zinc-300 mb-1 md:text-base text-sm"><b>Time:</b> {detail.startTime} - {detail.endTime}</p>
+                                <p className="text-zinc-300 mb-1 md:text-base text-sm"><b>Venue:</b> {detail.location.venue}</p>
+                                <p className="text-zinc-300 mb-1 md:text-base text-sm"><b>Address:</b> {detail.location.address}, {detail.location.city}, {detail.location.state} {detail.location.zipCode}</p>
+                                <p className="text-zinc-300 mb-1 md:text-base text-sm"><b>Organizer:</b> {detail.organizer.name}, {detail.organizer.email}, {detail.organizer.phone}</p>
+                                <p className="text-zinc-300 mb-1 md:text-base text-sm"><b>Category:</b> {detail.category}</p>
+                                <p className="text-zinc-300 mb-1 md:text-base text-sm"><b>Price:</b> ₹{detail.price}</p>
+                                <p className="text-zinc-300 mb-1 md:text-base text-sm"><b>Registration Deadline:</b> {new Date(detail.registrationDeadline).toLocaleDateString()}</p>
+                                <p className="text-zinc-300 mb-2 md:text-base text-sm"><b>Status:</b> <span className="capitalize">{detail.status}</span></p>
                                 <div className="flex gap-3">
                                     <button className="px-4 cursor-pointer py-1 bg-zinc-800 border rounded-lg text-zinc-200"
                                         onClick={() => { setEditEvent(detail); setModalOpen(true); setDetail(null) }}>

@@ -22,6 +22,7 @@ import {
     Filter,
     IndianRupee,
 } from 'lucide-react';
+import SidebarMobileOpenButton from '@/components/SidebarMobileOpenButton';
 
 type Period = 'daily' | 'weekly' | 'monthly' | 'total';
 
@@ -363,16 +364,16 @@ const Analytics: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-zinc-950 p-6 mt-18">
+        <div className="min-h-screen md:w-full w-screen bg-zinc-950 py-6 md:px-6 px-4 md:mt-18 mt-24">
+            <SidebarMobileOpenButton />
             <div className="max-w-7xl mx-auto">
                 <div className="mb-6">
                     <h1 className="text-2xl font-bold text-zinc-300 mb-1">Revenue Dashboard</h1>
                     <p className="text-zinc-500">Comprehensive overview of your business performance</p>
                 </div>
-                {/* Time period buttons */}
                 <div className="bg-zinc-900 border rounded-lg shadow-sm p-3 mb-6">
-                    <div className="flex items-center gap-4">
-                        <Filter className="h-4 w-4 text-gray-300" />
+                    <div className="flex md:flex-row flex-col md:items-center gap-4">
+                        <Filter className="h-4 w-4 md:block hidden text-gray-300" />
                         <span className="font-medium text-sm text-gray-300">Time Period:</span>
                         <div className="flex gap-2">
                             {(['daily', 'weekly', 'monthly', 'total'] as Period[]).map((period) => (
@@ -390,7 +391,6 @@ const Analytics: React.FC = () => {
                         </div>
                     </div>
                 </div>
-                {/* Summary Cards - total revenue, advance, pending broken down by turf and piplay */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 mb-6">
                     {[
                         {
@@ -443,8 +443,6 @@ const Analytics: React.FC = () => {
                         </div>
                     ))}
                 </div>
-
-                {/* Revenue Comparison Chart */}
                 <div className="bg-zinc-900 border rounded-lg shadow-sm p-6 mb-8">
                     <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
                         <BarChart3 className="h-5 w-5" />
@@ -466,8 +464,6 @@ const Analytics: React.FC = () => {
                         </ResponsiveContainer>
                     </div>
                 </div>
-
-                {/* Revenue Breakdown Pie Chart */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                     <div className="bg-zinc-900 border rounded-lg shadow-sm p-6">
                         <h2 className="text-xl font-semibold text-zinc-300 mb-4 flex items-center gap-2">
@@ -496,7 +492,6 @@ const Analytics: React.FC = () => {
                             </ResponsiveContainer>
                         </div>
                     </div>
-                    {/* Payment Status Pie Chart */}
                     <div className="bg-zinc-900 border rounded-lg shadow-sm p-6">
                         <h2 className="text-xl font-semibold text-zinc-300 mb-4">Payment Status</h2>
                         <div className="h-64">
