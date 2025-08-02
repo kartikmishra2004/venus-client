@@ -212,9 +212,9 @@ export default function EventForm({ event, onClose, onSave }: Props) {
 
             <div className="flex gap-2 px-2 justify-end mt-2">
                 <button type="button" onClick={onClose}
-                    className="border rounded px-3 py-1.5 text-sm cursor-pointer text-zinc-200 bg-zinc-800">Cancel</button>
+                    className="border rounded px-3 py-1.5 md:mb-0 mb-20 text-sm cursor-pointer text-zinc-200 bg-zinc-800">Cancel</button>
                 <button type="submit" disabled={loading}
-                    className="border rounded px-3 py-1.5 text-sm cursor-pointer hover:bg-primary/80 transition-colors bg-primary text-zinc-50">
+                    className="border rounded px-3 py-1.5 md:mb-0 mb-20 text-sm cursor-pointer hover:bg-primary/80 transition-colors bg-primary text-zinc-50">
                     {loading ? "Saving..." : "Save"}
                 </button>
             </div>

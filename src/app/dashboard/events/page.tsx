@@ -181,7 +181,7 @@ export default function Events() {
                 </div>
             </div>
             {modalOpen && (
-                <div className="fixed inset-0 md:mt-12 mt-20 bg-zinc-950 bg-opacity-60 z-[9999] flex items-center justify-center">
+                <div className="fixed inset-0 md:mt-12 mt-20 md:py-0 bg-zinc-950 bg-opacity-60 z-[9999] flex items-center justify-center">
                     <div className="bg-zinc-900 border w-full max-w-3xl p-4 md:p-6 max-h-[90vh] overflow-y-auto rounded">
                         <EventForm event={editEvent} onClose={closeModal} onSave={onSave} />
                     </div>
@@ -189,7 +189,7 @@ export default function Events() {
             )}
             {detail && (
                 <div className="fixed inset-0 bg-zinc-950 bg-opacity-50 z-40 flex items-center justify-center">
-                    <div className="bg-zinc-900 md:h-max h-screen mt-28 border rounded-lg w-full max-w-3xl p-6 relative">
+                    <div className="bg-zinc-900 md:h-max h-screen mt-52 border rounded-lg w-full max-w-3xl p-6 relative">
                         <button className="absolute top-5 right-5 text-zinc-200" onClick={() => setDetail(null)}>✕</button>
                         <div className="flex flex-col md:flex-row gap-4">
                             {detail.imageURL && <img src={detail.imageURL} alt={detail.title} className="md:w-52 w-full md:h-full h-32 md:mt-0 mt-10 rounded-lg border object-cover" />}
